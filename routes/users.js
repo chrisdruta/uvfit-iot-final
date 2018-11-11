@@ -70,7 +70,7 @@ router.post('/register', (req, resp) => {
 		return resp.status(400).json({success: false, error: "Missing new user registration info"})
 
 	// Regular expressions described and taken from https://gist.github.com/ravibharathii/3975295
-	const emailRe = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/;
+	const emailRe = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i;
 	const passRe = /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
 
 	if (emailRe.test(req.body.email) && passRe.test(req.body.password)) {
