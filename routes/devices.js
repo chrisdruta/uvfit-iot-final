@@ -6,6 +6,16 @@ var jwt = require("jwt-simple");
 var User = require("../models/users");
 var Device = require("../models/devices");
 
+function getNewApikey() {
+    var newApikey = "";
+    var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    
+    for (var i = 0; i < 32; i++) {
+       newApikey += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+    }
+    return newApikey;
+}
+
 router.post('/register', (req, res) => {
 	if (!req.headers['x-auth'])
 		return resp.status(401).json({success: false, error: "Authentification parameter(s) missing"});
@@ -23,7 +33,33 @@ router.post('/register', (req, res) => {
 				res.status(401).json({success: false, error: err});
 
 			else if (user) {
-				User.updateOne({email: decoded.email}, {$push: {devices: {}}})
+				Device.findOne({photonId: req.body.photonId}, (err, device) => {
+					if (err)
+						res.status(401).json({success: false, error: err});
+
+					else if (!device) {
+						const apiKey = getNewApikey();
+						let newDevice = new Device({
+							photonId: req.body.photonId,
+							userEmail: decoded.email,
+							apiKey: apiKey
+						});
+
+						newDevice.save((err, createdDevice) => {
+							if (err)
+								res.status(400).json({success: false, error: err});
+
+							else {
+								User.updateOne({email: decoded.email}, {$push: {devices: req.body.photonId}});
+								res.status(201).json({success: true, apiKey: apiKey});
+							}
+						});
+					}
+
+					else
+						res.status(400).json({success: false, error: "Device already registered"});
+						
+				});
 			}
 
 			else
