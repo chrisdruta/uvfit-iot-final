@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+    <link href="style.css" rel="stylesheet">
+    <script src="register.js" defer></script>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="home.html" class="brand-logo left">UVFit</a>
+        </div>
+    </nav>
+    <div class="form card-content">
+        <span class="card-title">User Registration</span><br>
+
+        <div class="input-field">
+            <label for="fullName">Full Name</label><br>
+            <input type="text" name="fullName" id="fullName"><br>
+        </div>
+        <div class="input-field">
+            <label for="email">Email</label><br>
+            <input type="email" name="email" id="email"><br>
+        </div>
+        <div class="input-field">
+            <label for="password">Password</label><br>
+            <input type="password" name="password" id="password"><br>
+        </div>
+        <div class="input-field">
+            <label for="passwordConfirm">Confirm Password</label><br>
+            <input type="password" name="passwordConfirm" id="passwordConfirm"><br>
+        </div>
+        <div class="card-action">
+            <div><button id="register" class="btn">Register</button></div>
+            <div id="account">Already have an account? <a href="index.html" class="signin">Sign in</a></div>
+        </div>
+    </div>
+    <div id="formErrors" style="display:none">
+    </div>
+
+
+</body>
+
+</html>

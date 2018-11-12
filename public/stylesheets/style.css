@@ -1,8 +1,84 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+.nav-wrapper {
+    background-color: rgb(184, 109, 11);
+    margin-bottom: 5pt;
+}
+
+.brand-logo {
+    color: white;
+    text-decoration: none;
+    font-size: 32pt;
+    padding-left: 10pt;
+}
+
+.card-content {
+    background-color: slategray;
+    color: white;
+    padding-top: 10pt;
+    padding-bottom: 10pt;
+    width: 25%;
+    margin-left: 5pt;
+    height: 6in;
+}
+
+.card-title {
+    font-size: 18pt;
+    font-weight: 100;
+    padding-left: 5pt;
+}
+
+.card-action {
+    padding-bottom: 10pt;
+    padding-left: 30pt;
+}
+
+.input-field {
+    padding: 10pt;
+}
+
+#password, #email, #fullName, #passwordConfirm, #deviceId {
+    background-color: rgb(202, 212, 221);
+    border: none;
+    padding: 5px;
+}
+
+#account {
+    padding-top: 10pt;
+}
+
+.btn {
+    padding-left: 10pt;
+    padding-right: 10pt;
+    padding-top: 5pt;
+    padding-bottom: 5pt;
+    text-transform: uppercase;
+    font-weight: lighter;
+    font-family: sans-serif;
+    background-color: chocolate;
+    border: none;
+    border-radius: 2px;
+    color: white;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+}
+
+.register, .signin {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: orange;
+}
+
+.devices-title {
+    padding-top: 10pt;
+    margin: 10pt;
+}
+
+#add, #card-add {
+    margin: 10pt;
+}
+
+.current-devices {
+    margin-top: 10pt;
 }
