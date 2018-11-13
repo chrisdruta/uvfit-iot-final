@@ -83,7 +83,8 @@ router.post('/data', (req, res) => {
 
 		else if (device) {
 			if (device.apiKey == req.body.apikey) {
-
+				console.log(req.body);
+				console.log({long: req.body.longitude, lat: req.body.latitude, speed: req.body.speed, uv: req.body.uvLight});
 				device.data.push({long: req.body.longitude, lat: req.body.latitude, speed: req.body.speed, uv: req.body.uvLight});
 				device.save((err, modifiedDevice) => {
 					if (err)
