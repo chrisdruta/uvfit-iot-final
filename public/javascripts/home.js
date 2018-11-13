@@ -65,9 +65,9 @@ function displayRecentActivity() {
     for (var key in this.response.deviceData) {
         deviceHTML += "<li>" + key + "</li>";
         for (var dataObject of this.response.deviceData[key]) {
-            for (var objEntry in dataObject) {
-              deviceHTML += "<p>" + objEntry + ": " + dataObject[objEntry] + "</p>";
-            }
+            //for (var objEntry in dataObject) {
+            deviceHTML += "<p>" + dataObject.long + "/t" + dataObject.lat + "/t" + dataObject.speed + "/t" + dataObject.uv + "</p>";
+            //}
         }
         //if (key == "deviceData") {
           //for (key2 in Object.keys(this.response)) {
