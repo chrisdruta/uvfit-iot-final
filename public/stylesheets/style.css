@@ -81,6 +81,7 @@
 
 #refresh {
     float: right;
+    margin-right: 10pt;
 }
 
 .current-devices {
