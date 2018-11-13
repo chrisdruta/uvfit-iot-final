@@ -25,11 +25,11 @@ function checkForm(event) {
      count ++;
    }
 
-   if(password.value.length < 10 || password.value.length > 20) {
+   if(password.value.length < 8 || password.value.length > 20) {
      formErrorsDiv.style.display = "block";
      formErrorsDiv.style.color = "red";
      password.style.borderColor = "red";
-     errorsHTML += "<li>Password must be between 10 and 20 characters.</li>";
+     errorsHTML += "<li>Password must be between 8 and 20 characters.</li>";
      count ++;
    }
 
