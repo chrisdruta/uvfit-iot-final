@@ -72,12 +72,12 @@ router.post('/register', (req, res) => {
 	catch (ex) {
 		return res.status(401).json({success: false, error: 'Invalid authentfication token'});
 	}
-	
+
 });
 
 router.post('/data', (req, res) => {
 
-	Device.updateOne({photonId: req.body.deviceId}, {$push: {data: req.body.payload}},
+	Device.updateOne({apiKey: req.body.apikey}, {$push: {data: {long: req.body.longitude, lat: req.body.latitude, speed: req.body.speed, uv: req.body.uvLight}}},
 						(err) => { if (err) res.status(400).json({success: false, error: err});}
 	);
 
