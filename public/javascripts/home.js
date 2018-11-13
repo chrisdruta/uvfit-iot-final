@@ -13,6 +13,8 @@ function submitDevice(event) {
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("x-auth", window.localStorage.getItem("authToken"));
     xhr.send(JSON.stringify({photonId:json}));
+
+    document.getElementById("card-add").style.display = "none";
 }
 
 function processResponse() {
@@ -43,45 +45,35 @@ function processResponse() {
     responseDiv.innerHTML = responseHTML;
 }
 
-function getRecentActivity() {
+function initRefresh() {
     var token = window.localStorage.getItem("authToken");
     var xhr = new XMLHttpRequest();
-    xhr.addEventListener("load", displayMostActivity);
+    xhr.addEventListener("load", displayRecentActivity);
     xhr.responseType = "json";
     xhr.open("GET", "/users/devices");
     xhr.setRequestHeader("x-auth", token);
     xhr.send();
 }
 
-function displayMostRecentActivity() {
-    //document.getElementById("main").style.display = "block";
+function displayRecentActivity {
+    var deviceHTML = "";
+    var deviceDiv = document.getElementById('current-devices');
 
-    if (this.status === 200) {
-        // If there's at least one pothole, draw the map
-        var latitude = 32.2319;
-        var longitude = -110.9501;
-        var activityReport = "No activity has been reported recently.";
+    deviceHTML += "<ol class='ServerResponse'>";
 
-        //show activity
+    for (var key in this.response) {
+        deviceHTML += "<li>" + key + ": " + this.response[key] + "</li>";
+    }
+    deviceHTML += "</ol>"
 
-    }
-    else if (this.status === 401) {
-        window.localStorage.removeItem("authToken");
-        window.location = "index.html";
-    }
-    else {
-        potholeText.innerHTML = "Error communicating with server.";
-    }
+    deviceDiv.innerHTML = responseHTML;
+
 }
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("add").addEventListener("click", addDevice);
-    document.getElementById("submit").addEventListener("click", submitDevice)
+    document.getElementById("submit").addEventListener("click", submitDevice);
 
-    function initRecent() {
-        // Allow the user to refresh by clicking a button.
-        document.getElementById("refreshRecent").addEventListener("click", getRecentActivity);
-        getRecentActvity();
-    }
+    document.getElementById("refresh").addEventListener("click", initRefresh);
 
 });
