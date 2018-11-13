@@ -113,7 +113,7 @@ router.get('/devices', (req, resp) => {
 		const decoded = jwt.decode(authToken, secret);
 		User.findOne({email: decoded.email}, (err, user) => {
 			if (err)
-				res.status(401).json({success: false, error: err});
+				resp.status(401).json({success: false, error: err});
 			
 			else if (user) {
 				const deviceData = {};
@@ -126,16 +126,16 @@ router.get('/devices', (req, resp) => {
 						}
 					})
 				}
-				res.status(200).json({success: true, deviceData: deviceData});
+				resp.status(200).json({success: true, deviceData: deviceData});
 			}
 
 			else
-				res.status(401).json({success: false, error: 'Invalid authentfication token'});
+				resp.status(401).json({success: false, error: 'Invalid authentfication token'});
 		});
 	}
 
 	catch (ex) {
-		return res.status(401).json({success: false, error: 'Invalid authentfication token'});
+		return resp.status(401).json({success: false, error: 'Invalid authentfication token'});
 	}
 });
 
