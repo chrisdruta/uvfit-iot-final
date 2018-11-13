@@ -63,8 +63,8 @@ function displayRecentActivity() {
 
     for (var key in this.response) {
         if (key == "deviceData") {
-          for (key2 in Object.key(this.response))
-          deviceHTML += "<li>" + key2 + ": " + Object.key(this.response[key2]) + "</li>";
+          for (key2 in Object.keys(this.response))
+          deviceHTML += "<li>" + key2 + ": " + Object.keys(this.response[key2]) + "</li>";
         }
 
     }
