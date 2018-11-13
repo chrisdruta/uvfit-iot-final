@@ -55,7 +55,7 @@ function initRefresh() {
     xhr.send();
 }
 
-function displayRecentActivity {
+function displayRecentActivity() {
     var deviceHTML = "";
     var deviceDiv = document.getElementById('current-devices');
 
