@@ -61,12 +61,14 @@ function displayRecentActivity() {
 
     deviceHTML += "<ol>";
 
-    for (var key in this.response) {
-        if (key == "deviceData") {
-          for (key2 in Object.keys(this.response)) {
-            deviceHTML += "<li>" + key2 + ": " + Object.keys(this.response[key2]) + "</li>";
-          }
-        }
+    for (var key in this.response.deviceData) {
+        deviceHTML += "<li>" + key + "</li>";
+        //for (var key2 in this.response.deviceData[key])
+        //if (key == "deviceData") {
+          //for (key2 in Object.keys(this.response)) {
+              //deviceHTML += "<li>" + key + ": " + Object.keys(this.response[key2]) + "</li>";
+          //}
+        //}
 
 
     }
