@@ -77,9 +77,29 @@ router.post('/register', (req, res) => {
 
 router.post('/data', (req, res) => {
 
-	Device.updateOne({apiKey: req.body.apikey}, {$push: {data: {long: req.body.longitude, lat: req.body.latitude, speed: req.body.speed, uv: req.body.uvLight}}},
-						(err) => { if (err) res.status(400).json({success: false, error: err});}
-	);
+	Device.findOne({deviceId: req.body.deviceId}, (err, device) => {
+		if (err)
+			res.status(400).json({success: false, error: err});
+
+		else if (device) {
+			if (device.apiKey == req.body.apikey) {
+
+				device.data.push({long: req.body.longitude, lat: req.body.latitude, speed: req.body.speed, uv: req.body.uvLight});
+				device.save((err, modifiedDevice) => {
+					if (err)
+						res.status(400).json({success: false, error: err});
+					else
+						res.status(201).json({success: true, msg: "Succesfully logged data to device"});
+				});
+			}
+			
+			else
+				res.status(400).json({success: false, error: 'Device apikey does not match'});
+		}
+
+		else
+			res.status(400).json({success: false, error: 'Device not registered'});
+	});
 
 	res.status(201).json({success: true});
 });
