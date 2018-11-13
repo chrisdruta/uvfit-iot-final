@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var ObjectId = require('mongodb').ObjectId;
 
 var bcrypt = require("bcrypt-nodejs");
 var jwt = require("jwt-simple");
@@ -117,13 +116,14 @@ router.get('/devices', (req, resp) => {
 				res.status(401).json({success: false, error: err});
 			
 			else if (user) {
-				const deviceData = [];
+				const deviceData = {};
 				
-				for (deviceId of user.devices) {
-					Device.findOne({'_id': ObjectId(deviceId)}, (err, device) => {
+				for (photonId of user.devices) {
+					Device.findOne({photonId: photonId}, (err, device) => {
 						// Not that robust, but probably fine for the scope of the project
-						if (device)
-							deviceData.push(device);
+						if (device) {
+							deviceData[photonId] = device.data;
+						}
 					})
 				}
 				res.status(200).json({success: true, deviceData: deviceData});
