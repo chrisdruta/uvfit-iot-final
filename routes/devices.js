@@ -92,7 +92,7 @@ router.post('/data', (req, res) => {
 						res.status(201).json({success: true, msg: "Succesfully logged data to device"});
 				});
 			}
-			
+
 			else
 				res.status(400).json({success: false, error: 'Device apikey does not match'});
 		}
@@ -100,8 +100,6 @@ router.post('/data', (req, res) => {
 		else
 			res.status(400).json({success: false, error: 'Device not registered'});
 	});
-
-	res.status(201).json({success: true});
 });
 
 module.exports = router;
