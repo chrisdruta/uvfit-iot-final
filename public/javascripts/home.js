@@ -48,7 +48,7 @@ function processResponse() {
 function initRefresh() {
     var token = window.localStorage.getItem("authToken");
     var xhr = new XMLHttpRequest();
-    xhr.addEventListener("load", displayRecentActivity());
+    xhr.addEventListener("load", displayRecentActivity;
     xhr.responseType = "json";
     xhr.open("GET", "/users/devices");
     xhr.setRequestHeader("x-auth", token);
@@ -59,14 +59,14 @@ function displayRecentActivity() {
     var deviceHTML = "";
     var deviceDiv = document.getElementById('current-devices');
 
-    deviceHTML += "<ol class='ServerResponse'>";
+    deviceHTML += "<ol>";
 
     for (var key in this.response) {
         deviceHTML += "<li>" + key + ": " + this.response[key] + "</li>";
     }
     deviceHTML += "</ol>"
 
-    deviceDiv.innerHTML = responseHTML;
+    deviceDiv.innerHTML = deviceHTML;
 
 }
 
