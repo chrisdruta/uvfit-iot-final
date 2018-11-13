@@ -6,6 +6,7 @@ function checkForm(event) {
 
 
    var formErrorsDiv = document.getElementById("formErrors");
+   var responseDiv = document.getElementById("response");
    var errorsHTML = "<ul>";
    var count = 0;
 
@@ -87,7 +88,7 @@ function checkForm(event) {
 	xhr.responseType = "json";
 	xhr.open("POST", '/users/register');
 	xhr.setRequestHeader("Content-type", "application/json");
-	xhr.send(JSON.stringify({email:email.value,fullName:fullName.value, password:password.value}));
+	xhr.send(JSON.stringify({email:email.value,name:fullName.value, password:password.value}));
 }
 
 function signUpResponse() {
