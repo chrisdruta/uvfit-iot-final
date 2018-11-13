@@ -9,6 +9,10 @@ var Device = require("../models/devices");
 
 var secret = "megachadz";
 
+function sleep (time) {
+	return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 /* GET users listing. */
 router.get('/', (req, res, next) => {
 	User.findOne({email: "coolguy12@fortnite.com"}, (err, user) => {
@@ -116,17 +120,21 @@ router.get('/devices', (req, resp) => {
 				resp.status(401).json({success: false, error: err});
 			
 			else if (user) {
-				const deviceData = {};
-				
-				for (photonId of user.devices) {
-					Device.findOne({photonId: photonId}, (err, device) => {
-						// Not that robust, but probably fine for the scope of the project
-						if (device) {
-							deviceData[photonId] = device.data;
-						}
-					})
-				}
-				resp.status(200).json({success: true, deviceData: deviceData});
+				var deviceData = {};
+				Device.find({userEmail: user.email}, (err, devices) => {
+					if (err)
+						resp.status(401).json({success: false, error: err});
+
+					else if (devices) {
+						for (dev of devices)
+							deviceData[dev.photonId] = dev.data;
+
+						resp.status(200).json({success: true, deviceData: deviceData});	
+					}
+					
+					else
+						resp.status(200).json({success: true, msg: "No registered devices"});
+				});
 			}
 
 			else

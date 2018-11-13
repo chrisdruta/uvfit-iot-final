@@ -114,6 +114,7 @@ function signUpResponse() {
   }
 
   // Update the response div in the webpage and make it visible
+  var responseDiv = document.getElementById("response");
   responseDiv.style.display = "block";
   responseDiv.innerHTML = responseHTML;
 }

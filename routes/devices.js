@@ -50,8 +50,13 @@ router.post('/register', (req, res) => {
 								res.status(400).json({success: false, error: err});
 
 							else {
-								User.updateOne({email: decoded.email}, {$push: {devices: req.body.photonId}});
-								res.status(201).json({success: true, apiKey: apiKey});
+								user.devices.push(req.body.photonId)
+								user.save((err, savedUser) => {
+									if (err)
+										res.status(400).json({success: false, error: err});
+									else
+										res.status(201).json({success: true, apiKey: apiKey});
+								});
 							}
 						});
 					}
@@ -83,8 +88,6 @@ router.post('/data', (req, res) => {
 
 		else if (device) {
 			if (device.apiKey == req.body.apikey) {
-				console.log(req.body);
-				console.log({long: req.body.longitude, lat: req.body.latitude, speed: req.body.speed, uv: req.body.uvLight});
 				device.data.push({long: req.body.longitude, lat: req.body.latitude, speed: req.body.speed, uv: req.body.uvLight});
 				device.save((err, modifiedDevice) => {
 					if (err)
