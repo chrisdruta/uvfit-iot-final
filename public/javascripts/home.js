@@ -89,7 +89,7 @@ function signout() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    intitRefresh();
+    initRefresh();
     document.getElementById("add").addEventListener("click", addDevice);
     document.getElementById("submit").addEventListener("click", submitDevice);
 
