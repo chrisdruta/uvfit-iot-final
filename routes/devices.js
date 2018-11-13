@@ -77,7 +77,7 @@ router.post('/register', (req, res) => {
 
 router.post('/data', (req, res) => {
 
-	Device.findOne({deviceId: req.body.deviceId}, (err, device) => {
+	Device.findOne({photonId: req.body.deviceId}, (err, device) => {
 		if (err)
 			res.status(400).json({success: false, error: err});
 
