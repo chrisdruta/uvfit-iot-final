@@ -28,7 +28,8 @@ function processResponse() {
         for (var key in this.response) {
             responseHTML += "<li>" + key + ": " + this.response[key] + "</li>";
         }
-        responseHTML += "</ol>"
+        responseHTML += "</ol>";
+        responseHTML += "<p>Keep this API key for future reference</p>";
     }
     else {
         responseHTML = "<p>Response (" + this.status + "):</p>"
@@ -37,7 +38,7 @@ function processResponse() {
         for (var key in this.response) {
             responseHTML += "<li>" + key + ": " + this.response[key] + "</li>";
         }
-        responseHTML += "</ol>"
+        responseHTML += "</ol>";
     }
 
     // Update the response div in the webpage and make it visible
@@ -63,7 +64,9 @@ function displayRecentActivity() {
 
     for (var key in this.response.deviceData) {
         deviceHTML += "<li>" + key + "</li>";
-        //for (var key2 in this.response.deviceData[key])
+        for (var dataObject of this.response.deviceData[key]) {
+            deviceHTML += "<p>" + dataObject + "</p>";
+        }
         //if (key == "deviceData") {
           //for (key2 in Object.keys(this.response)) {
               //deviceHTML += "<li>" + key + ": " + Object.keys(this.response[key2]) + "</li>";
