@@ -4,14 +4,14 @@ function addDevice(event) {
 
 function submitDevice(event) {
     //var url = document.getElementById("url").value;
-    //var json = document.getElementById("jsonData").value;
+    var json = document.getElementById("deviceId").value;
 
     var xhr = new XMLHttpRequest();
     xhr.addEventListener("load", processResponse);
     xhr.responseType = "json";
     xhr.open("POST", '/devices/register');
-    xhr.setRequestHeader("Content-type", "application/json");
-    xhr.send(json);
+    xhr.setRequestHeader({"Content-type", "application/json", "x-auth", token});
+    xhr.send(JSON.stringify({photonId:json}));
 }
 
 function processResponse() {
