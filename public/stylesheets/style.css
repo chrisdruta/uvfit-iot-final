@@ -79,6 +79,10 @@
     margin: 10pt;
 }
 
+#refresh {
+    float: right;
+}
+
 .current-devices {
     margin-top: 10pt;
 }
