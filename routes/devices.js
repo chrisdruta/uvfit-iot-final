@@ -28,6 +28,7 @@ router.post('/register', (req, res) => {
 
 	try {
 		const decoded = jwt.decode(authToken, "megachadz");
+		console.log(decoded);
 		User.findOne({email: decoded.email}, (err, user) => {
 			if (err)
 				res.status(401).json({success: false, error: err});
@@ -62,12 +63,15 @@ router.post('/register', (req, res) => {
 				});
 			}
 
-			else
+			else {
+				console.log('error: decoded user not found');
 				res.status(401).json({success: false, error: 'Invalid authentfication token'});
+			}
 
 		});
 	}
 	catch (ex) {
+		console.log(`caught error: ${ex}`);
 		return res.status(401).json({success: false, error: 'Invalid authentfication token'});
 	}
 });
