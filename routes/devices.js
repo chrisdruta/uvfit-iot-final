@@ -39,7 +39,7 @@ router.post('/register', (req, res) => {
 
 					else if (!device) {
 						const apiKey = getNewApikey();
-						let newDevice = new Device({
+						const newDevice = new Device({
 							photonId: req.body.photonId,
 							userEmail: decoded.email,
 							apiKey: apiKey
