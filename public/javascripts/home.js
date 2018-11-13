@@ -83,10 +83,17 @@ function displayRecentActivity() {
 
 }
 
+function signout() {
+    window.localStorage.removeItem("authToken");
+    window.location = "index.html";
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+    intitRefresh();
     document.getElementById("add").addEventListener("click", addDevice);
     document.getElementById("submit").addEventListener("click", submitDevice);
 
     document.getElementById("refresh").addEventListener("click", initRefresh);
+    document.getElementById("signout").addEventListener("click", signout);
 
 });
