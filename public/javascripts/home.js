@@ -11,7 +11,7 @@ function submitDevice(event) {
     xhr.responseType = "json";
     xhr.open("POST", '/devices/register');
     xhr.setRequestHeader("Content-type", "application/json");
-    xhr.setRequestHeader("x-auth", window.localStorage.getItem("token"));
+    xhr.setRequestHeader("x-auth", window.localStorage.getItem("authToken"));
     xhr.send(JSON.stringify({photonId:json}));
 }
 
