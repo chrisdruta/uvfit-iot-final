@@ -27,7 +27,7 @@ router.post('/register', (req, res) => {
 		res.status(400).json({success: false, error: 'Request missing valid photon device id'})
 
 	try {
-		const decoded = jwt.decode(authToken, secret);
+		const decoded = jwt.decode(authToken, "megachadz");
 		User.findOne({email: decoded.email}, (err, user) => {
 			if (err)
 				res.status(401).json({success: false, error: err});
