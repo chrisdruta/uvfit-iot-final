@@ -59,7 +59,7 @@ router.post('/login', (req, res) => {
 	});
 });
 
-router.post('/register', (req, resp) => {
+router.post('/register', (req, res) => {
 	/**
 	 * POST /user/register endpoint that creates a new user in the db
 	 * 
@@ -70,7 +70,7 @@ router.post('/register', (req, resp) => {
 	 */
 
 	if (!req.body.email || !req.body.name || !req.body.password)
-		return resp.status(400).json({success: false, error: "Missing new user registration info"})
+		return res.status(400).json({success: false, error: "Missing new user registration info"})
 
 	// Regular expressions described and taken from https://gist.github.com/ravibharathii/3975295
 	const emailRe = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i;
@@ -86,19 +86,19 @@ router.post('/register', (req, resp) => {
 
 			newUser.save((err, user) => {
 				if (err)
-					resp.status(400).json({success: false, error: err.errmsg});
+					res.status(400).json({success: false, error: err.errmsg});
 				else
-					resp.status(201).json({success: true, message: `User has been created for email ${user.email}`});
+					res.status(201).json({success: true, message: `User has been created for email ${user.email}`});
 			});
 		});
 	}
 
 	else
-		return resp.status(400).json({success: false, error: "Given information doens't pass regex"});
+		return res.status(400).json({success: false, error: "Given information doens't pass regex"});
 
 });
 
-router.get('/devices', (req, resp) => {
+router.get('/devices', (req, res) => {
 	/**
 	 * GET /user/devices endpoint that returns a JSON of user's device's information
 	 * 
@@ -109,7 +109,7 @@ router.get('/devices', (req, resp) => {
 	 */
 	
 	if (!req.headers['x-auth'])
-		return resp.status(401).json({success: false, error: "Authentification parameter(s) missing"});
+		return res.status(401).json({success: false, error: "Authentification parameter(s) missing"});
 
 	const authToken = req.headers['x-auth'];
 
@@ -117,33 +117,33 @@ router.get('/devices', (req, resp) => {
 		const decoded = jwt.decode(authToken, secret);
 		User.findOne({email: decoded.email}, (err, user) => {
 			if (err)
-				resp.status(401).json({success: false, error: err});
+				res.status(401).json({success: false, error: err});
 			
 			else if (user) {
 				var deviceData = {};
 				Device.find({userEmail: user.email}, (err, devices) => {
 					if (err)
-						resp.status(401).json({success: false, error: err});
+						res.status(401).json({success: false, error: err});
 
 					else if (devices) {
 						for (dev of devices)
 							deviceData[dev.photonId] = dev.data;
 
-						resp.status(200).json({success: true, deviceData: deviceData});	
+						res.status(200).json({success: true, deviceData: deviceData});	
 					}
-					
+
 					else
-						resp.status(200).json({success: true, msg: "No registered devices"});
+						res.status(200).json({success: true, msg: "No registered devices"});
 				});
 			}
 
 			else
-				resp.status(401).json({success: false, error: 'Invalid authentfication token'});
+				res.status(401).json({success: false, error: 'Invalid authentfication token'});
 		});
 	}
 
 	catch (ex) {
-		return resp.status(401).json({success: false, error: 'Invalid authentfication token'});
+		return res.status(401).json({success: false, error: 'Invalid authentfication token'});
 	}
 });
 

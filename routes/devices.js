@@ -18,13 +18,13 @@ function getNewApikey() {
 
 router.post('/register', (req, res) => {
 	if (!req.headers['x-auth'])
-		return resp.status(401).json({success: false, error: "Authentification parameter(s) missing"});
+		return res.status(401).json({success: false, error: "Authentification parameter(s) missing"});
 
 	const authToken = req.headers['x-auth'];
 	const photonIdRe = /[a-f0-9]+/;
 
 	if (!photonIdRe.test(req.body.photonId))
-		res.status(400).json({success: false, error: 'Request missing valid photon device id'})
+		return res.status(400).json({success: false, error: 'Request missing valid photon device id'})
 
 	try {
 		const decoded = jwt.decode(authToken, "megachadz");
