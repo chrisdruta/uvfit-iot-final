@@ -19,7 +19,7 @@
     color: white;
     padding-top: 10pt;
     padding-bottom: 10pt;
-    width: 25%;
+    width: auto;
     margin-left: 5pt;
     height: auto;
 }
@@ -45,15 +45,35 @@
     padding: 5px;
 }
 
-#account {
+#register {
     padding-top: 10pt;
 }
 
 .btn {
-    padding-left: 10pt;
-    padding-right: 10pt;
-    padding-top: 5pt;
-    padding-bottom: 5pt;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: lighter;
+    text-decoration: none;
+    font-family: sans-serif;
+    background-color: chocolate;
+    border: none;
+    border-radius: 2px;
+    color: white;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+}
+
+.btn-small {
+    /*float: right;*/
+    margin-right: 5px;
+    margin-left: 5px;
+    padding-left: 5pt;
+    padding-right: 5pt;
+    padding-top: 2.5pt;
+    padding-bottom: 2.5pt;
     text-transform: uppercase;
     font-weight: lighter;
     font-family: sans-serif;
@@ -80,10 +100,52 @@
 }
 
 #refresh {
-    float: right;
-    margin-right: 10pt;
+    /*float: right;
+    margin-right: 20px;*/
+    margin-left: 10px;
 }
 
 .current-devices {
     margin-top: 10pt;
+}
+
+#signout, #home {
+    margin-right: 10px;
+}
+
+#activities, #account {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.user-info {
+    margin-top: 10px;
+}
+
+.info {
+    list-style-type: none;
+}
+
+li{
+  margin: 20px 0;
+}
+
+.summary {
+    margin-left: auto;
+    margin-right: auto;
+    border-spacing: 100px 10px;
+    outline-style: solid;
+    outline-color: white; 
+}
+
+.summary-title {
+    font-size: 24px;
+}
+
+.summary-data {
+    font-size: 20px;
+}
+
+.list-title {
+    margin-left: 5px;
 }

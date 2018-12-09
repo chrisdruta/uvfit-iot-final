@@ -65,16 +65,8 @@ function displayRecentActivity() {
     for (var key in this.response.deviceData) {
         deviceHTML += "<li>" + key + "</li>";
         for (var dataObject of this.response.deviceData[key]) {
-            //for (var objEntry in dataObject) {
             deviceHTML += "<p> Longitude: " + dataObject.long + "\t Latitude: " + dataObject.lat + "\t Speed: " + dataObject.speed + "\t UV: " + dataObject.uv + "</p>";
-            //}
         }
-        //if (key == "deviceData") {
-          //for (key2 in Object.keys(this.response)) {
-              //deviceHTML += "<li>" + key + ": " + Object.keys(this.response[key2]) + "</li>";
-          //}
-        //}
-
 
     }
     deviceHTML += "</ol>"
@@ -88,11 +80,15 @@ function signout() {
     window.location = "index.html";
 }
 
+function accountInfo() {
+    window.location = "account.html";
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     initRefresh();
     document.getElementById("add").addEventListener("click", addDevice);
     document.getElementById("submit").addEventListener("click", submitDevice);
-
+    document.getElementById("account").addEventListener("click", accountInfo);
     document.getElementById("refresh").addEventListener("click", initRefresh);
     document.getElementById("signout").addEventListener("click", signout);
 
