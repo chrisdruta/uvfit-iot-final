@@ -142,7 +142,7 @@ router.post('/update', (req, res) => {
 	 * 		JSON object containing items to update with required password
 	 * 		
 	 * Output:
-	 * 		JSON containing an array of user's device's information
+	 * 		JSON containing success status and list of errors that occured
 	 */
 
 	if (!req.headers['x-auth'])
@@ -279,6 +279,57 @@ router.post('/update', (req, res) => {
 		});
 	}
 
+});
+
+router.get('/config', (req, res) => {
+	/**
+	 * GET /user/config endpoint that returns user's personal UV level
+	 * 
+	 * Input:
+	 * 		Encoded JWT in header
+	 * Output:
+	 * 		JSON containing success status and UV configuration
+	 */
+
+	if (!req.headers['x-auth'])
+		return res.status(401).json({
+			success: false,
+			error: "Authentification parameter(s) missing"
+		});
+
+	const authToken = req.headers['x-auth'];
+
+	try {
+		const decoded = jwt.decode(authToken, secret);
+
+		User.findOne({
+			'email': decoded.email
+		}, (err, user) => {
+			if (err)
+				res.status(401).json({
+					success: false,
+					error: err
+				});
+
+			else if (user)
+				res.status(200).json({
+					success: true,
+					uvLevel: user.uvLevel
+				});
+
+			else
+				res.status(401).json({
+					success: false,
+					error: 'Invalid authentfication token'
+				});
+		});
+
+	} catch (ex) {
+		return res.status(401).json({
+			success: false,
+			error: 'Invalid authentfication token'
+		});
+	}
 });
 
 router.get('/devices', (req, res) => {
