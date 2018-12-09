@@ -8,23 +8,34 @@ var User = require("../models/users");
 var Device = require("../models/devices");
 
 var secret = "megachadz";
+var DEFAULT_UV_LEVEL = 1
 
-function sleep (time) {
-	return new Promise((resolve) => setTimeout(resolve, time));
+// Regular expressions described and taken from https://gist.github.com/ravibharathii/3975295
+const emailRe = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i;
+const passRe = /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
-	User.findOne({email: "coolguy12@fortnite.com"}, (err, user) => {
-    	if (err)
-      		res.status(500).json({error: err});
+	User.findOne({
+		email: "coolguy12@fortnite.com"
+	}, (err, user) => {
+		if (err)
+			res.status(500).json({
+				error: err
+			});
 
-    	else if (user)
-      		res.status(200).json(user);
+		else if (user)
+			res.status(200).json(user);
 
 		else
-			res.status(200).json({error: "User not found"});
-  	});
+			res.status(200).json({
+				error: "User not found"
+			});
+	});
 });
 
 router.post('/login', (req, res) => {
@@ -36,26 +47,43 @@ router.post('/login', (req, res) => {
 	 * Output:
 	 * 		JSON containing jwt or error
 	 */
-	
-	User.findOne({email: req.body.email}, (err, user) => {
-    	if (err)
-      		res.status(401).json({success: false, error: err});
 
-    	else if (user) {
-      		bcrypt.compare(req.body.password, user.passwordHash, (err, isValid) => {
-        		if (err)
-          			res.status(401).json({success: false, error: err});
+	User.findOne({
+		email: req.body.email
+	}, (err, user) => {
+		if (err)
+			res.status(401).json({
+				success: false,
+				error: err
+			});
+
+		else if (user) {
+			bcrypt.compare(req.body.password, user.passwordHash, (err, isValid) => {
+				if (err)
+					res.status(401).json({
+						success: false,
+						error: err
+					});
 
 				else if (isValid)
-					res.status(201).json({success: true, token: jwt.encode({email: user.email}, secret)});
+					res.status(201).json({
+						success: true,
+						token: jwt.encode({
+							email: user.email
+						}, secret)
+					});
 
 				else
-					res.status(401).json({success: false, error: "The email or password provided was invalid"});
+					res.status(401).json({
+						success: false,
+						error: "The email or password provided was invalid"
+					});
 			});
-	}
-
-	else
-		res.status(401).json({success: false, error: "The email or password provided was invalid"});
+		} else
+			res.status(401).json({
+				success: false,
+				error: "The email or password provided was invalid"
+			});
 	});
 });
 
@@ -70,31 +98,186 @@ router.post('/register', (req, res) => {
 	 */
 
 	if (!req.body.email || !req.body.name || !req.body.password)
-		return res.status(400).json({success: false, error: "Missing new user registration info"})
-
-	// Regular expressions described and taken from https://gist.github.com/ravibharathii/3975295
-	const emailRe = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i;
-	const passRe = /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+		return res.status(400).json({
+			success: false,
+			error: "Missing new user registration info"
+		})
 
 	if (emailRe.test(req.body.email) && passRe.test(req.body.password)) {
 		bcrypt.hash(req.body.password, null, null, (err, hash) => {
 			const newUser = new User({
 				email: req.body.email,
 				fullName: req.body.name,
-				passwordHash: hash
+				passwordHash: hash,
+				uvLevel: DEFAULT_UV_LEVEL
 			});
 
 			newUser.save((err, user) => {
 				if (err)
-					res.status(400).json({success: false, error: err.errmsg});
+					res.status(400).json({
+						success: false,
+						error: err.errmsg
+					});
 				else
-					res.status(201).json({success: true, message: `User has been created for email ${user.email}`});
+					res.status(201).json({
+						success: true,
+						message: `User has been created for email ${user.email}`
+					});
 			});
 		});
-	}
+	} else
+		return res.status(400).json({
+			success: false,
+			error: "Given information doens't pass regex"
+		});
 
-	else
-		return res.status(400).json({success: false, error: "Given information doens't pass regex"});
+});
+
+router.post('/update', (req, res) => {
+	/**
+	 * POST /user/update endpoint that updates a user's information
+	 * 
+	 * Input:
+	 * 		Encoded JWT in header
+	 * 		JSON object containing items to update with required password
+	 * 		
+	 * Output:
+	 * 		JSON containing an array of user's device's information
+	 */
+
+	if (!req.headers['x-auth'])
+		return res.status(401).json({
+			success: false,
+			error: "Authentification parameter(s) missing"
+		});
+
+	const authToken = req.headers['x-auth'];
+
+	try {
+		const decoded = jwt.decode(authToken, secret);
+
+		User.findOne({
+			email: decoded.email
+		}, (err, user) => {
+			if (err)
+				res.status(401).json({
+					success: false,
+					error: err
+				});
+			else if (user) {
+				bcrypt.compare(req.body.password, user.passwordHash, (err, isValid) => {
+					if (err)
+						res.status(401).json({
+							success: false,
+							error: err
+						});
+
+					else if (isValid) {
+
+						updateErrorList = [];
+
+						// Go through each non-null value to update
+						if (req.body.fullName)
+							user.fullName = req.body.fullName;
+
+						if (req.body.uvLevel) {
+							if (req.body.uvLevel <= DEFAULT_UV_MIN)
+								updateErrorList.push({
+									'uvLevel': "Given value is below minimum UV level"
+								});
+							else
+								user.uvLevel = req.body.uvLevel;
+						}
+
+						if (req.body.email) {
+							if (!emailRe.test(req.body.email))
+								updateErrorList.push({
+									'email': "Not a valid email address"
+								});
+
+							else {
+								user.email = req.body.email;
+
+								// Go through and update all of the user's devices
+								Device.find({
+									email: user.email
+								}, (err, devices) => {
+									if (err)
+										res.status(401).json({
+											success: false,
+											error: err
+										});
+
+									else if (devices) {
+										for (dev of devices) {
+											dev.userEmail = req.body.email;
+											dev.save((err, savedDev) => {
+												if (err)
+													updateErrorList.push({
+														'email': `Database error while updating email for device ${dev.photonId}: ${err}`
+													});
+											});
+										}
+									}
+								});
+								// Sleep 1/2 a second to wait for devices to update and properly get error messages
+								await sleep(500);
+							}
+						}
+
+						if (req.body.newPassword) {
+							if (req.body.newPassword != req.body.newPasswordConfirm)
+								updateErrorList.push({
+									'password': "New password doesn't match with it's confirmation"
+								});
+							else {
+								bcrypt.hash(req.body.newPassword, null, null, (err, hash) => {
+									if (err)
+										updateErrorList.push({
+											'password': `Bcrypt encountered an error hashing new password: ${err}`
+										});
+									else {
+										user.passwordHash = hash;
+									}
+								});
+								// Sleep for 1/4 second to make sure bcrpyt updates user password hash
+								await sleep(250);
+							}
+						}
+
+						user.save((err, savedUser) => {
+							if (err)
+								return res.status(400).json({
+									success: false,
+									error: err
+								});
+							else
+								return res.status(201).json({
+									success: true,
+									errors: updateErrorList
+								});
+						});
+
+					} else
+						res.status(401).json({
+							success: false,
+							error: "The password provided was invalid"
+						});
+				});
+			} else {
+				res.status(401).json({
+					success: false,
+					error: "The email or password provided was invalid"
+				});
+			}
+
+		});
+	} catch (ex) {
+		return res.status(401).json({
+			success: false,
+			error: 'Invalid authentfication token'
+		});
+	}
 
 });
 
@@ -107,43 +290,62 @@ router.get('/devices', (req, res) => {
 	 * Output:
 	 * 		JSON containing an array of user's device's information
 	 */
-	
+
 	if (!req.headers['x-auth'])
-		return res.status(401).json({success: false, error: "Authentification parameter(s) missing"});
+		return res.status(401).json({
+			success: false,
+			error: "Authentification parameter(s) missing"
+		});
 
 	const authToken = req.headers['x-auth'];
 
 	try {
 		const decoded = jwt.decode(authToken, secret);
-		User.findOne({email: decoded.email}, (err, user) => {
+		User.findOne({
+			email: decoded.email
+		}, (err, user) => {
 			if (err)
-				res.status(401).json({success: false, error: err});
-			
+				res.status(401).json({
+					success: false,
+					error: err
+				});
+
 			else if (user) {
 				var deviceData = {};
-				Device.find({userEmail: user.email}, (err, devices) => {
+				Device.find({
+					userEmail: user.email
+				}, (err, devices) => {
 					if (err)
-						res.status(401).json({success: false, error: err});
+						res.status(401).json({
+							success: false,
+							error: err
+						});
 
 					else if (devices) {
 						for (dev of devices)
 							deviceData[dev.photonId] = dev.data;
 
-						res.status(200).json({success: true, deviceData: deviceData});	
-					}
-
-					else
-						res.status(200).json({success: true, msg: "No registered devices"});
+						res.status(200).json({
+							success: true,
+							deviceData: deviceData
+						});
+					} else
+						res.status(200).json({
+							success: true,
+							msg: "No registered devices"
+						});
 				});
-			}
-
-			else
-				res.status(401).json({success: false, error: 'Invalid authentfication token'});
+			} else
+				res.status(401).json({
+					success: false,
+					error: 'Invalid authentfication token'
+				});
 		});
-	}
-
-	catch (ex) {
-		return res.status(401).json({success: false, error: 'Invalid authentfication token'});
+	} catch (ex) {
+		return res.status(401).json({
+			success: false,
+			error: 'Invalid authentfication token'
+		});
 	}
 });
 

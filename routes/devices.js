@@ -7,18 +7,21 @@ var User = require("../models/users");
 var Device = require("../models/devices");
 
 function getNewApikey() {
-    var newApikey = "";
-    var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    
-    for (var i = 0; i < 32; i++) {
-       newApikey += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-    }
-    return newApikey;
+	var newApikey = "";
+	var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+	for (var i = 0; i < 32; i++) {
+		newApikey += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+	}
+	return newApikey;
 }
 
 router.post('/register', (req, res) => {
 	if (!req.headers['x-auth'])
-		return res.status(401).json({success: false, error: "Authentification parameter(s) missing"});
+		return res.status(401).json({
+			success: false,
+			error: "Authentification parameter(s) missing"
+		});
 
 	const authToken = req.headers['x-auth'];
 	//const photonIdRe = /[a-f0-9]+/;
@@ -28,14 +31,24 @@ router.post('/register', (req, res) => {
 
 	try {
 		const decoded = jwt.decode(authToken, "megachadz");
-		User.findOne({email: decoded.email}, (err, user) => {
+		User.findOne({
+			email: decoded.email
+		}, (err, user) => {
 			if (err)
-				res.status(401).json({success: false, error: err});
+				res.status(401).json({
+					success: false,
+					error: err
+				});
 
 			else if (user) {
-				Device.findOne({photonId: req.body.photonId}, (err, device) => {
+				Device.findOne({
+					photonId: req.body.photonId
+				}, (err, device) => {
 					if (err)
-						res.status(401).json({success: false, error: err});
+						res.status(401).json({
+							success: false,
+							error: err
+						});
 
 					else if (!device) {
 						const apiKey = getNewApikey();
@@ -47,64 +60,92 @@ router.post('/register', (req, res) => {
 
 						newDevice.save((err, createdDevice) => {
 							if (err)
-								res.status(400).json({success: false, error: err});
+								res.status(400).json({
+									success: false,
+									error: err
+								});
 
 							else {
 								user.devices.push(req.body.photonId)
 								user.save((err, savedUser) => {
 									if (err)
-										res.status(400).json({success: false, error: err});
+										res.status(400).json({
+											success: false,
+											error: err
+										});
 									else
-										res.status(201).json({success: true, apiKey: apiKey});
+										res.status(201).json({
+											success: true,
+											apiKey: apiKey
+										});
 								});
 							}
 						});
-					}
+					} else
+						res.status(400).json({
+							success: false,
+							error: "Device already registered"
+						});
 
-					else
-						res.status(400).json({success: false, error: "Device already registered"});
-						
+				});
+			} else {
+				res.status(401).json({
+					success: false,
+					error: 'Invalid authentfication token'
 				});
 			}
 
-			else {
-				res.status(401).json({success: false, error: 'Invalid authentfication token'});
-			}
-
 		});
-	}
-
-	catch (ex) {
-		return res.status(401).json({success: false, error: 'Invalid authentfication token'});
+	} catch (ex) {
+		return res.status(401).json({
+			success: false,
+			error: 'Invalid authentfication token'
+		});
 	}
 
 });
 
 router.post('/data', (req, res) => {
 
-	Device.findOne({photonId: req.body.deviceId}, (err, device) => {
+	Device.findOne({
+		photonId: req.body.deviceId
+	}, (err, device) => {
 		if (err)
-			res.status(400).json({success: false, error: err});
+			res.status(400).json({
+				success: false,
+				error: err
+			});
 
 		else if (device) {
 			if (device.apiKey == req.body.apikey) {
-				console.log(req.body)
-				console.log({long: req.body.longitude, lat: req.body.latitude, speed: req.body.speed, uv: req.body.uvLight})
-				device.data.push({long: req.body.longitude, lat: req.body.latitude, speed: req.body.speed, uv: req.body.uvLight});
+				device.data.push({
+					long: req.body.longitude,
+					lat: req.body.latitude,
+					speed: req.body.speed,
+					uv: req.body.uvLight
+				});
 				device.save((err, modifiedDevice) => {
 					if (err)
-						res.status(400).json({success: false, error: err});
+						res.status(400).json({
+							success: false,
+							error: err
+						});
 					else
-						res.status(201).json({success: true, msg: "Succesfully logged data to device"});
+						res.status(201).json({
+							success: true,
+							msg: "Succesfully logged data to device"
+						});
 				});
-			}
-
-			else
-				res.status(400).json({success: false, error: 'Device apikey does not match'});
-		}
-
-		else
-			res.status(400).json({success: false, error: 'Device not registered'});
+			} else
+				res.status(400).json({
+					success: false,
+					error: 'Device apikey does not match'
+				});
+		} else
+			res.status(400).json({
+				success: false,
+				error: 'Device not registered'
+			});
 	});
 });
 
