@@ -64,15 +64,15 @@ function getAccountInfo() {
     var xhr = new XMLHttpRequest();
     xhr.addEventListener("load", displayAccountInfo);
     xhr.responseType = "json";
-    xhr.open("GET", "/users/info");
+    xhr.open("GET", "/user/info");
     xhr.setRequestHeader("x-auth", token);
     xhr.send();
 }
 
 function displayAccountInfo() {
-    document.getElementById("user-fullName").innerHTML(data.name);
-    document.getElementById("user-email").innerHTML(data.email);
-    document.getElementById("user-threshold").innerHTML(data.threshold);
+    document.getElementById("user-fullName").innerHTML(this.response.name);
+    document.getElementById("user-email").innerHTML(this.response.email);
+    document.getElementById("user-threshold").innerHTML(this.response.uvLevel);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
