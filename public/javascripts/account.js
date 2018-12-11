@@ -24,7 +24,9 @@ function hideInfoChange() {
 function submitUpdate() {
     var name = document.getElementById("newName").value;
     var email = document.getElementById("newEmail").value;
+    var oldPassword = document.getElementById("oldPassword").value;
     var password = document.getElementById("newPassword").value;
+    var confirmPassword = document.getElementById("confirmPassword").value;
     var uvLevel = document.getElementById("newUVLevel").value;
     var token = window.localStorage.getItem("authToken");
 
@@ -34,7 +36,7 @@ function submitUpdate() {
     xhr.open("PUT", '/users/info');
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("x-auth", token);
-    xhr.send(JSON.stringify({name:name, email:email, password:password, uvLevel:uvLevel }));
+    xhr.send(JSON.stringify({name:name, email:email, password:oldPassword, uvLevel:uvLevel, newPassword:password, newPasswordConfirm:confirmPassword }));
 }
 
 function verifyUpdate() {
@@ -70,9 +72,9 @@ function getAccountInfo() {
 }
 
 function displayAccountInfo() {
-    document.getElementById("user-fullName").innerHTML(data.name);
-    document.getElementById("user-email").innerHTML(data.email);
-    document.getElementById("user-threshold").innerHTML(data.threshold);
+    document.getElementById("user-fullName").innerHTML = this.response.name;
+    document.getElementById("user-email").innerHTML = this.response.email;
+    document.getElementById("user-threshold").innerHTML = this.response.uvLevel;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
