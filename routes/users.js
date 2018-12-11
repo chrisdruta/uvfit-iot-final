@@ -181,7 +181,7 @@ router.put('/info', (req, res) => {
 							user.fullName = req.body.fullName;
 
 						if (req.body.uvLevel) {
-							if (req.body.uvLevel <= DEFAULT_UV_MIN)
+							if (req.body.uvLevel <= DEFAULT_UV_LEVEL)
 								updateErrorList.push({
 									'uvLevel': "Given value is below minimum UV level"
 								});
