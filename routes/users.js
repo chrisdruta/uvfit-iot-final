@@ -14,7 +14,7 @@ var DEFAULT_UV_LEVEL = 1
 const emailRe = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i;
 const passRe = /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
 
-function sleep(ms) {
+async function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -133,7 +133,7 @@ router.post('/register', (req, res) => {
 
 });
 
-router.put('/info', async (req, res) => {
+router.put('/info', (req, res) => {
 	/**
 	 * PUT /user/update endpoint that updates a user's information
 	 * 
@@ -165,7 +165,7 @@ router.put('/info', async (req, res) => {
 					error: err
 				});
 			else if (user) {
-				bcrypt.compare(req.body.password, user.passwordHash, (err, isValid) => {
+				bcrypt.compare(req.body.password, user.passwordHash, async (err, isValid) => {
 					if (err)
 						res.status(401).json({
 							success: false,
