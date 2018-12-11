@@ -36,7 +36,7 @@ function displayActivitiesList() {
     var activityUl = document.getElementById('activities');
     activityUl.innerHTML = "";
 
-    for (var activity of localStorage.getItem('activities')) {
+    for (var activity of window.localStorage.getItem('activities')) {
         var li = document.createElement("li")
         li.name = activity.id;
         li.innerHTML = "Activity " + activity.id + "; " + activity.type + "&emsp;Date: " + activity.startDateTime.toLocaleString() + "&emsp;Duration: " + activity.endDateTime - activity.startDateTime / 60000 + "&emsp;Calories: " + activity.caloriesBurned + "&emsp;UV: " + activity.uvExposure;
