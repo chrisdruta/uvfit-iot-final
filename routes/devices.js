@@ -213,7 +213,7 @@ router.post('/data', (req, res) => {
 										activity.caloriesBurned = 69;
 										break;
 									case 'walk':
-										activities.caloriesBurned = 1;
+										activity.caloriesBurned = 1;
 								}
 
 								user.save((err, savedUser) => {
