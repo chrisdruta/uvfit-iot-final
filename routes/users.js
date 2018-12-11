@@ -254,6 +254,9 @@ router.put('/info', (req, res) => {
 							else
 								return res.status(201).json({
 									success: true,
+									token: jwt.encode({
+										email: user.email
+									}, secret),
 									errors: updateErrorList
 								});
 						});
