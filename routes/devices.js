@@ -20,6 +20,16 @@ function getNewApikey() {
 }
 
 router.post('/register', (req, res) => {
+	/**
+	 * POST /devices/register endpoint that register endpoint
+	 * 
+	 * Input:
+	 * 		Encoded JWT in header
+	 * 		JSON containing device photonId
+	 * Output:
+	 * 		JSON containing success status and auth key
+	 */
+
 	if (!req.headers['x-auth'])
 		return res.status(401).json({
 			success: false,
@@ -84,6 +94,70 @@ router.post('/register', (req, res) => {
 						res.status(400).json({
 							success: false,
 							error: "Device already registered"
+						});
+
+				});
+			} else {
+				res.status(401).json({
+					success: false,
+					error: 'Invalid authentfication token'
+				});
+			}
+
+		});
+	} catch (ex) {
+		return res.status(401).json({
+			success: false,
+			error: 'Invalid authentfication token'
+		});
+	}
+
+});
+
+router.delete('/remove', (req, res) => {
+	/**
+	 * DELETE /devices/remove endpoint that removes specified device
+	 * 
+	 * Input:
+	 * 		Encoded JWT in header
+	 * 		JSON containing device photonId
+	 * Output:
+	 * 		JSON containing success status
+	 */
+
+	if (!req.headers['x-auth'])
+		return res.status(401).json({
+			success: false,
+			error: "Authentification parameter(s) missing"
+		});
+
+	const authToken = req.headers['x-auth'];
+
+	try {
+		const decoded = jwt.decode(authToken, "megachadz");
+		User.findOne({
+			email: decoded.email
+		}, (err, user) => {
+			if (err)
+				res.status(401).json({
+					success: false,
+					error: err
+				});
+
+			else if (user) {
+				
+				Device.findOneAndDelete({
+					photonId: req.body.photonId
+				}, (err, removedDevice) => {
+					if (err)
+						res.status(401).json({
+							success: false,
+							error: err
+						});
+
+					else
+						res.status(200).json({
+							success: true
 						});
 
 				});
