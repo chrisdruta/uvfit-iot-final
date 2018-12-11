@@ -62,26 +62,60 @@ function displayRecentActivity() {
 
     deviceHTML += "<ol>";
 
-    for (var key in this.response.deviceData) {
+    for (var key in this.response.deviceList) {
         deviceHTML += "<li>" + key + "</li>";
-        for (var dataObject of this.response.deviceData[key]) {
-            deviceHTML += "<p> Longitude: " + dataObject.long + "\t Latitude: " + dataObject.lat + "\t Speed: " + dataObject.speed + "\t UV: " + dataObject.uv + "</p>";
-        }
+        var button = document.createAttribute('input');
+        button.setAttribute('type', 'button');
+        button.setAttribute('id', key);
+        button.setAttribute('onclick', 'removeDevice()');
 
     }
     deviceHTML += "</ol>"
 
+    // Update the response div in the webpage and make it visible
     deviceDiv.innerHTML = deviceHTML;
 
+}
+
+function removeDevice() {
+    var xhr = new XMLHttpRequest();
+    xhr.addEventListener("load", processRemove);
+    xhr.responseType = "json";
+    xhr.open("DELETE", '/devices/remove');
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("x-auth", window.localStorage.getItem("authToken"));
+    xhr.send();
+}
+
+function processRemove() {
+    var responseDiv = document.getElementById('ServerResponse');
+    var responseHTML = "";
+
+    // 200 is the response code for a successful DELETE request
+    if (this.status === 200) {
+        initRefresh();
+        /*responseHTML += "<ol class='ServerResponse'>";
+
+        for (var key in this.response) {
+            responseHTML += "<li>" + key + ": " + this.response[key] + "</li>";
+        }
+        responseHTML += "</ol>";
+        responseHTML += "<p>Keep this API key for future reference</p>";*/
+    }
+    else {
+        responseHTML = "<p>Response (" + this.status + "):</p>"
+        responseHTML += "<ol class='ServerResponse'>";
+
+        for (var key in this.response) {
+            responseHTML += "<li>" + key + ": " + this.response[key] + "</li>";
+        }
+        responseHTML += "</ol>";
+    }
 }
 
 function signout() {
     window.localStorage.removeItem("authToken");
     window.location = "index.html";
-}
-
-function accountInfo() {
-    window.location = "account.html";
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -92,7 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     document.getElementById("add").addEventListener("click", addDevice);
     document.getElementById("submit").addEventListener("click", submitDevice);
-    //document.getElementById("account").addEventListener("click", accountInfo);
     document.getElementById("refresh").addEventListener("click", initRefresh);
     document.getElementById("signout").addEventListener("click", signout);
 
