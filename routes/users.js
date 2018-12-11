@@ -33,14 +33,14 @@ router.get('/', (req, res, next) => {
 
 		else
 			res.status(200).json({
-				error: "User not found"
+				error: "Cool guy not found"
 			});
 	});
 });
 
 router.post('/login', (req, res) => {
 	/**
-	 * POST /user/login endpoint that checks user credentials and provides an auth token
+	 * POST /users/login endpoint that checks user credentials and provides an auth token
 	 * 
 	 * Input:
 	 * 		JSON object containing items with keys: email, password
@@ -89,7 +89,7 @@ router.post('/login', (req, res) => {
 
 router.post('/register', (req, res) => {
 	/**
-	 * POST /user/register endpoint that creates a new user in the db
+	 * POST /users/register endpoint that creates a new user in the db
 	 * 
 	 * Input:
 	 * 		JSON object containing items with keys: email, name, password
@@ -135,7 +135,7 @@ router.post('/register', (req, res) => {
 
 router.put('/info', (req, res) => {
 	/**
-	 * PUT /user/update endpoint that updates a user's information
+	 * PUT /users/info endpoint that updates a user's information
 	 * 
 	 * Input:
 	 * 		Encoded JWT in header
@@ -196,7 +196,7 @@ router.put('/info', (req, res) => {
 								});
 
 							else {
-								
+
 
 								// Go through and update all of the user's devices
 								Device.find({
@@ -220,7 +220,7 @@ router.put('/info', (req, res) => {
 										}
 									}
 								});
-	
+
 								// Sleep 1/2 a second to wait for devices to update and properly get error messages
 								user.email = req.body.email;
 								await sleep(500);
@@ -288,7 +288,7 @@ router.put('/info', (req, res) => {
 
 router.get('/config', (req, res) => {
 	/**
-	 * GET /user/config endpoint that returns user's personal UV level
+	 * GET /users/config endpoint that returns user's personal UV level
 	 * 
 	 * Input:
 	 * 		Encoded JWT in header
@@ -341,7 +341,7 @@ router.get('/config', (req, res) => {
 
 router.get('/devices', (req, res) => {
 	/**
-	 * GET /user/devices endpoint that returns a JSON of user's device's information
+	 * GET /users/devices endpoint that returns a JSON of user's device's information
 	 * 
 	 * Input:
 	 * 		Encoded JWT in header
@@ -409,7 +409,7 @@ router.get('/devices', (req, res) => {
 
 router.get('/activities', (req, res) => {
 	/**
-	 * GET /user/activities endpoint that returns list of user's activities
+	 * GET /users/activities endpoint that returns list of user's activities
 	 * 
 	 * Input:
 	 * 		Encoded JWT in header

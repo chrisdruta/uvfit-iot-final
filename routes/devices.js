@@ -145,7 +145,7 @@ router.delete('/remove', (req, res) => {
 				});
 
 			else if (user) {
-				
+
 				Device.findOneAndDelete({
 					photonId: req.body.photonId
 				}, (err, removedDevice) => {
@@ -254,7 +254,7 @@ router.post('/data', (req, res) => {
 								})
 							else if (user) {
 								activity = user.activities[user.activities.length - 1];
-								
+
 								activity.endDateTime = new Date();
 								let avgSpeed = 0;
 
