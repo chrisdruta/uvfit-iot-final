@@ -60,6 +60,7 @@ function addToMap() {
     for (var location of localStorage.getItem("activities")[this.name-1].route) {
         var marker = L.marker([location.lat, location.long]).addTo(mymap);
     }
+    document.getElementById("mapid").style.display = "block";
 }
 
 document.addEventListener("DOMContentLoaded", function () {
