@@ -30,6 +30,7 @@ function load7Days() {
 }
 
 function displayActivitiesList() {
+    //localStorage.setItem('activities', this.response.activities);
     var activityUl = document.getElementById('activities');
     activityUl.innerHTML = "";
 
