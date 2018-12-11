@@ -24,7 +24,9 @@ function hideInfoChange() {
 function submitUpdate() {
     var name = document.getElementById("newName").value;
     var email = document.getElementById("newEmail").value;
+    var oldPassword = document.getElementById("oldPassword").value;
     var password = document.getElementById("newPassword").value;
+    var confirmPassword = document.getElementById("confirmPassword").value;
     var uvLevel = document.getElementById("newUVLevel").value;
     var token = window.localStorage.getItem("authToken");
 
@@ -34,7 +36,7 @@ function submitUpdate() {
     xhr.open("PUT", '/users/info');
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("x-auth", token);
-    xhr.send(JSON.stringify({name:name, email:email, password:password, uvLevel:uvLevel }));
+    xhr.send(JSON.stringify({name:name, email:email, password:password, uvLevel:uvLevel, newPassword:newPassword, newPasswordConfirm:confirmPassword }));
 }
 
 function verifyUpdate() {
