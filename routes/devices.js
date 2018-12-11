@@ -31,10 +31,6 @@ router.post('/register', (req, res) => {
 		});
 
 	const authToken = req.headers['x-auth'];
-	//const photonIdRe = /[a-f0-9]+/;
-
-	//if (!photonIdRe.test(req.body.photonId))
-	//	return res.status(400).json({success: false, error: 'Request missing valid photon device id'})
 
 	try {
 		const decoded = jwt.decode(authToken, "megachadz");

@@ -364,7 +364,7 @@ router.get('/devices', (req, res) => {
 				});
 
 			else if (user) {
-				var deviceData = {};
+				var deviceList = [];
 				Device.find({
 					userEmail: user.email
 				}, (err, devices) => {
@@ -376,11 +376,11 @@ router.get('/devices', (req, res) => {
 
 					else if (devices) {
 						for (dev of devices)
-							deviceData[dev.photonId] = dev.data;
+							deviceList.push(dev.photonId)
 
 						res.status(200).json({
 							success: true,
-							deviceData: deviceData
+							deviceList: deviceList
 						});
 					} else
 						res.status(200).json({
@@ -390,6 +390,54 @@ router.get('/devices', (req, res) => {
 				});
 			} else
 				res.status(401).json({
+					success: false,
+					error: 'Invalid authentfication token'
+				});
+		});
+	} catch (ex) {
+		return res.status(401).json({
+			success: false,
+			error: 'Invalid authentfication token'
+		});
+	}
+});
+
+router.get('/activities', (req, res) => {
+	/**
+	 * GET /user/activities endpoint that returns list of user's activities
+	 * 
+	 * Input:
+	 * 		Encoded JWT in header
+	 * Output:
+	 * 		JSON containing an array of user's activities
+	 */
+
+	if (!req.headers['x-auth'])
+		return res.status(401).json({
+			success: false,
+			error: "Authentification parameter(s) missing"
+		});
+
+	const authToken = req.headers['x-auth'];
+
+	try {
+		const decoded = jwt.decode(authToken, secret);
+		User.findOne({
+			email: decoded.email
+		}, (err, user) => {
+			if (err)
+				return res.status(401).json({
+					success: false,
+					error: err
+				});
+
+			else if (user) {
+				return res.status(200).json({
+					success: true,
+					activities: user.activities
+				});
+			} else
+				return res.status(401).json({
 					success: false,
 					error: 'Invalid authentfication token'
 				});
@@ -438,7 +486,7 @@ router.get('/info', (req, res) => {
 					email: user.email,
 					uvLevel: user.uvLevel
 				});
-				
+
 			} else
 				res.status(401).json({
 					success: false,
