@@ -253,7 +253,7 @@ router.post('/data', (req, res) => {
 									error: err
 								})
 							else if (user) {
-								activity = user.activities[user.activities.length - 1];
+								activity = user.activities.pop()
 
 								activity.endDateTime = new Date();
 								let avgSpeed = 0;
@@ -287,7 +287,7 @@ router.post('/data', (req, res) => {
 										activity.caloriesBurned = 1;
 								}
 								console.log(activity)
-								user.activities[user.activities.length - 1] = activity;
+								user.activities.push(activity);
 
 								user.save((err, savedUser) => {
 									if (err)
