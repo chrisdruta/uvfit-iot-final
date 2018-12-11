@@ -42,7 +42,7 @@ function submitUpdate() {
 function verifyUpdate() {
     // 200 is the response code for a successful GET request
     if (this.status === 201) {
-        window.localStorage.setItem("authToken") = this.response.authToken; 
+        window.localStorage.setItem("authToken", this.response.token); 
         hideInfoChange();
         getAccountInfo();
     }
