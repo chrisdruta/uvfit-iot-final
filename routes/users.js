@@ -196,7 +196,7 @@ router.put('/info', (req, res) => {
 								});
 
 							else {
-								user.email = req.body.email;
+								
 
 								// Go through and update all of the user's devices
 								Device.find({
@@ -220,7 +220,9 @@ router.put('/info', (req, res) => {
 										}
 									}
 								});
+	
 								// Sleep 1/2 a second to wait for devices to update and properly get error messages
+								user.email = req.body.email;
 								await sleep(500);
 							}
 						}
