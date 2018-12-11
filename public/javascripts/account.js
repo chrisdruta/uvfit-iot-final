@@ -42,6 +42,7 @@ function submitUpdate() {
 function verifyUpdate() {
     // 200 is the response code for a successful GET request
     if (this.status === 201) {
+        window.localStorage.setItem("authToken") = this.response.authToken; 
         hideInfoChange();
         getAccountInfo();
     }
@@ -54,6 +55,13 @@ function verifyUpdate() {
         responseDiv.style.display = "block";
         responseDiv.innerHTML = responseHTML;
     }
+
+    document.getElementById("newName").innerHTML = "";
+    document.getElementById("newEmail").innerHTML = "";
+    document.getElementById("oldPassword").innerHTML = "";
+    document.getElementById("newPassword").innerHTML = "";
+    document.getElementById("confirmPassword").innerHTML = "";
+    document.getElementById("newUVLevel").innerHTML = "";
 }
 
 function getAccountInfo() {
