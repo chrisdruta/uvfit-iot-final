@@ -64,7 +64,7 @@ function getAccountInfo() {
     var xhr = new XMLHttpRequest();
     xhr.addEventListener("load", displayAccountInfo);
     xhr.responseType = "json";
-    xhr.open("GET", "/user/info");
+    xhr.open("GET", "/users/info");
     xhr.setRequestHeader("x-auth", token);
     xhr.send();
 }
