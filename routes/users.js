@@ -291,45 +291,47 @@ router.get('/config', (req, res) => {
 	 * 		JSON containing success status and UV configuration
 	 */
 
-	if (!req.headers['x-auth'])
+	if (!req.headers['apikey'])
 		return res.status(401).json({
 			success: false,
 			error: "Authentification parameter(s) missing"
 		});
 
-	const authToken = req.headers['x-auth'];
+	const apiKey = req.headers['apikey'];
 
-	try {
-		const decoded = jwt.decode(authToken, secret);
+	Device.findOne({
+		apiKey: apiKey
+	}, (err, device) => {
 
-		User.findOne({
-			'email': decoded.email
-		}, (err, user) => {
-			if (err)
-				res.status(401).json({
-					success: false,
-					error: err
-				});
+		if (err) {
+			return res.status(401).json({
+				success: false,
+				error: err
+			});
+		} else if (device) {
 
-			else if (user)
-				res.status(200).json({
-					success: true,
-					uvLevel: user.uvLevel
-				});
-
-			else
-				res.status(401).json({
-					success: false,
-					error: 'Invalid authentfication token'
-				});
-		});
-
-	} catch (ex) {
-		return res.status(401).json({
-			success: false,
-			error: 'Invalid authentfication token'
-		});
-	}
+			User.findOne({
+				email: device.userEmail
+			}, (err, user) => {
+				if (err)
+					return res.status(400).json({
+						success: false,
+						error: err
+					});
+				else if (user)
+					return res.status(200).send(user.uvLevel);
+				else
+					return res.status(400).json({
+						success: false,
+						error: 'Device\'s user not found'
+					});
+			});
+		} else
+			return res.status(401).json({
+				success: false,
+				error: 'Invalid authentfication'
+			});
+	});
 });
 
 router.get('/devices', (req, res) => {
