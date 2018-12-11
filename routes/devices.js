@@ -136,7 +136,7 @@ router.post('/data', (req, res) => {
 							else if (user) {
 								user.activities.push({
 									id: user.activities.length + 1,
-									startDateTime = new Date(),
+									startDateTime: new Date(),
 									endDateTime: null,
 									type: null,
 									uvExposure: -1,
