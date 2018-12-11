@@ -51,13 +51,9 @@ function verifyUpdate() {
         var responseHTML = "<span>";
         responseHTML += "Error: " + this.response.error;
         responseHTML += "</span>"
-        responseDiv.innerHTML = responseHTML;
         responseDiv.style.display = "block";
+        responseDiv.innerHTML = responseHTML;
     }
-
-    // Update the response div in the webpage and make it visible
-    responseDiv.style.display = "block";
-    responseDiv.innerHTML = responseHTML;
 }
 
 function getAccountInfo() {
