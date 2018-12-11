@@ -133,7 +133,7 @@ router.post('/register', (req, res) => {
 
 });
 
-router.put('/update', (req, res) => {
+router.put('/info', (req, res) => {
 	/**
 	 * PUT /user/update endpoint that updates a user's information
 	 * 
@@ -388,6 +388,57 @@ router.get('/devices', (req, res) => {
 							msg: "No registered devices"
 						});
 				});
+			} else
+				res.status(401).json({
+					success: false,
+					error: 'Invalid authentfication token'
+				});
+		});
+	} catch (ex) {
+		return res.status(401).json({
+			success: false,
+			error: 'Invalid authentfication token'
+		});
+	}
+});
+
+router.get('/info', (req, res) => {
+	/**
+	 * GET /user/info endpoint that returns a JSON of user's information
+	 * 
+	 * Input:
+	 * 		Encoded JWT in header
+	 * Output:
+	 * 		JSON containing user information
+	 */
+
+	if (!req.headers['x-auth'])
+		return res.status(401).json({
+			success: false,
+			error: "Authentification parameter(s) missing"
+		});
+
+	const authToken = req.headers['x-auth'];
+
+	try {
+		const decoded = jwt.decode(authToken, secret);
+		User.findOne({
+			email: decoded.email
+		}, (err, user) => {
+			if (err)
+				res.status(401).json({
+					success: false,
+					error: err
+				});
+
+			else if (user) {
+				res.status(200).json({
+					success: true,
+					name: user.fullName,
+					email: user.email,
+					uvLevel: user.uvLevel
+				});
+				
 			} else
 				res.status(401).json({
 					success: false,
