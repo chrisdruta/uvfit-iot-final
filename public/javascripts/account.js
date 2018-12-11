@@ -70,9 +70,9 @@ function getAccountInfo() {
 }
 
 function displayAccountInfo() {
-    document.getElementById("user-fullName").innerHTML(this.response.name);
-    document.getElementById("user-email").innerHTML(this.response.email);
-    document.getElementById("user-threshold").innerHTML(this.response.uvLevel);
+    document.getElementById("user-fullName").innerHTML = this.response.name;
+    document.getElementById("user-email").innerHTML = this.response.email;
+    document.getElementById("user-threshold").innerHTML = this.response.uvLevel;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
