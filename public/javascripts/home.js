@@ -65,9 +65,12 @@ function displayRecentActivity() {
     for (var key in this.response.deviceList) {
         deviceHTML += "<li>" + key + "</li>";
         var button = document.createAttribute('input');
-        button.setAttribute('type', 'button');
+        button['type'] = 'button';
+        button['id'] = key;
+        button['click'] = "removeDevice()";
+        /*button.setAttribute('type', 'button');
         button.setAttribute('id', key);
-        button.setAttribute('onclick', 'removeDevice()');
+        button.setAttribute('onclick', 'removeDevice()');*/
 
     }
     deviceHTML += "</ol>"
