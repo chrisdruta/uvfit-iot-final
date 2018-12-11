@@ -324,7 +324,7 @@ router.get('/config', (req, res) => {
 						error: err
 					});
 				else if (user)
-					return res.status(200).send(user.uvLevel);
+					return res.status(200).send(user.uvLevel.toString());
 				else
 					return res.status(400).json({
 						success: false,
