@@ -165,7 +165,7 @@ router.put('/info', (req, res) => {
 					error: err
 				});
 			else if (user) {
-				bcrypt.compare(req.body.password, user.passwordHash, (err, isValid) => {
+				bcrypt.compare(req.body.password, user.passwordHash, async (err, isValid) => {
 					if (err)
 						res.status(401).json({
 							success: false,
