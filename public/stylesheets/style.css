@@ -7,6 +7,49 @@
     margin-bottom: 5pt;
 }
 
+nav.menu {
+	width: 300px;
+	min-height: calc(100vh - 121px);
+	background-color: slategray;
+	position: absolute;
+	left: -300px;
+	transition: .3s all;
+}
+
+header > .top a.menu_icon i {
+	color: white;
+	font-size: 40px;
+	padding-top: 3px;
+	transition: .2s ease;
+}
+header > .top a.menu_icon:hover i {
+	color: slategray;
+}
+
+nav.menu > a {
+    display: block;
+    padding: 5px;
+    margin: 15px 0 0px 20px;
+    color: white;
+    text-transform: uppercase;
+}
+
+.menu_show {
+	left: 0!important;
+}
+
+@media screen and (max-width: 425px) {
+	header h1 {
+		font-size: 16px;
+	}
+}
+@media screen and (max-width: 360px) {
+	nav.menu {
+		width: 100%;
+		left: -100%; 
+	}
+}
+
 .brand-logo {
     color: white;
     text-decoration: none;
@@ -20,7 +63,6 @@
     padding-top: 10pt;
     padding-bottom: 10pt;
     width: auto;
-    margin-left: 5pt;
     height: auto;
 }
 
@@ -146,6 +188,28 @@ li{
     font-size: 20px;
 }
 
+@media screen and (max-width: 800px) {
+    .summary {
+        border-spacing: 25px 10px;
+    }
+    .summary-title {
+        font-size: 12px;
+    }
+    .summary-data {
+        font-size: 10px;
+    }
+    .summary-labels {
+        font-size: 12px;
+    }
+}
+
 .list-title {
     margin-left: 5px;
 }
+
+#mapid { 
+    height: 300px;
+    width: 450px;
+    margin: auto;
+}
+
