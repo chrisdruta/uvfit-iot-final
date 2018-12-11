@@ -19,6 +19,13 @@ function hideInfoChange() {
     document.getElementById("thresholdDropdown").style.display = "none";
     document.getElementById("updateDropdown").style.display = "none";
     document.getElementById("updateInfo").style.display = "block";
+
+    document.getElementById("newName").innerHTML = "";
+    document.getElementById("newEmail").innerHTML = "";
+    document.getElementById("oldPassword").innerHTML = "";
+    document.getElementById("newPassword").innerHTML = "";
+    document.getElementById("confirmPassword").innerHTML = "";
+    document.getElementById("newUVLevel").innerHTML = "";
 }
 
 function submitUpdate() {
@@ -56,12 +63,9 @@ function verifyUpdate() {
         responseDiv.innerHTML = responseHTML;
     }
 
-    document.getElementById("newName").innerHTML = "";
-    document.getElementById("newEmail").innerHTML = "";
-    document.getElementById("oldPassword").innerHTML = "";
-    document.getElementById("newPassword").innerHTML = "";
-    document.getElementById("confirmPassword").innerHTML = "";
-    document.getElementById("newUVLevel").innerHTML = "";
+    if (this.response.errors.length > 0) {
+        document.getElementById("errors").innerHTML = this.response.errors;
+    }
 }
 
 function getAccountInfo() {
