@@ -6,6 +6,9 @@ var jwt = require("jwt-simple");
 var User = require("../models/users");
 var Device = require("../models/devices");
 
+const SPEED_BIKE = 15;
+const SPEED_RUN = 8;
+
 function getNewApikey() {
 	var newApikey = "";
 	var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -14,6 +17,10 @@ function getNewApikey() {
 		newApikey += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
 	}
 	return newApikey;
+}
+
+Array.prototype.last = function () {
+	return this[this.length - 1];
 }
 
 router.post('/register', (req, res) => {
@@ -118,24 +125,137 @@ router.post('/data', (req, res) => {
 
 		else if (device) {
 			if (device.apiKey == req.body.apikey) {
-				device.data.push({
-					long: req.body.longitude,
-					lat: req.body.latitude,
-					speed: req.body.speed,
-					uv: req.body.uvLight
-				});
-				device.save((err, modifiedDevice) => {
-					if (err)
-						res.status(400).json({
-							success: false,
-							error: err
+
+				if (req.body.command) {
+					if (req.body.command == 'start') {
+
+						User.findOne({
+							email: device.userEmail
+						}, (err, user) => {
+							if (err)
+								res.status(401).json({
+									success: false,
+									error: err
+								})
+							else if (user) {
+								user.activities.push({
+									id: user.activities.length + 1,
+									startDateTime = new Date(),
+									endDateTime: null,
+									type: null,
+									uvExposure: -1,
+									caloriesBurned: 0,
+									route: []
+								});
+
+								user.save((err, savedUser) => {
+									if (err)
+										return res.status(400).json({
+											success: false,
+											error: err
+										});
+									else if (savedUser) {
+										device.dataBuffer = [];
+										device.save((err, savedDevice) => {
+											if (err)
+												return res.status(400).json({
+													success: false,
+													error: err
+												});
+											else if (savedDevice)
+												return res.status(201);
+											else
+												return res.status(400).json({
+													success: false,
+													error: 'Failed to save device'
+												});
+										})
+									} else
+										res.status(400).json({
+											error: "Failed to save user"
+										})
+								})
+							}
 						});
-					else
-						res.status(201).json({
-							success: true,
-							msg: "Succesfully logged data to device"
+					} else if (req.body.command == 'end') {
+						User.findOne({
+							email: device.userEmail
+						}, (err, user) => {
+							if (err)
+								res.status(401).json({
+									success: false,
+									error: err
+								})
+							else if (user) {
+								activity = user.activities.last();
+								activity.endDateTime = new Date();
+								let avgSpeed = 0;
+
+								for (data of device.dataBuffer) {
+									if (data.uv > activity.uvExposure)
+										activity.uvExposure = data.uv;
+									speed += data.speed;
+									activity.route.push({
+										long: data.long,
+										lat: data.lat
+									});
+								}
+								avgSpeed = avgSpeed / device.dataBuffer.length;
+
+								if (avgSpeed >= SPEED_BIKE)
+									activity.type = 'bike';
+								else if (avgSpeed >= SPEED_RUN)
+									activity.type = 'run';
+								else
+									activity.type = 'walk';
+
+								switch (activity.type) {
+									case 'bike':
+										activity.caloriesBurned = 420;
+										break;
+									case 'run':
+										activity.caloriesBurned = 69;
+										break;
+									case 'walk':
+										activities.caloriesBurned = 1;
+								}
+
+								user.save((err, savedUser) => {
+									if (err)
+										return res.status(400).json({
+											success: false,
+											error: err
+										});
+									else if (savedUser) {
+										return res.status(201);
+									} else
+										res.status(400).json({
+											error: "Failed to save user"
+										})
+								})
+							}
 						});
-				});
+					}
+				} else {
+					device.dataBuffer.push({
+						long: req.body.longitude,
+						lat: req.body.latitude,
+						speed: req.body.speed,
+						uv: req.body.uvLight
+					});
+					device.save((err, modifiedDevice) => {
+						if (err)
+							res.status(400).json({
+								success: false,
+								error: err
+							});
+						else
+							res.status(201).json({
+								success: true,
+							});
+					});
+				}
+
 			} else
 				res.status(400).json({
 					success: false,
@@ -147,6 +267,7 @@ router.post('/data', (req, res) => {
 				error: 'Device not registered'
 			});
 	});
+
 });
 
 module.exports = router;
