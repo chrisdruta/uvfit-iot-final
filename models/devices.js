@@ -10,7 +10,7 @@ var deviceSchema = new db.Schema({
 		type: String,
 		required: true
 	},
-	data: {
+	dataBuffer: {
 		type: Array
 	},
 	apiKey: {

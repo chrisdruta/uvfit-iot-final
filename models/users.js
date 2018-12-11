@@ -12,7 +12,10 @@ var userSchema = new db.Schema({
 	},
 	passwordHash: String,
 	devices: [String],
-	uvLevel = Number
+	uvLevel = Number,
+	activities: {
+		type: Array
+	}
 });
 
 var User = db.model("User", userSchema);
