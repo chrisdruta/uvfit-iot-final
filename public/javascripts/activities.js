@@ -1,9 +1,10 @@
 function loadActivitiesList() {
     var token = window.localStorage.getItem("authToken");
-    xhr.addEventListener("load", (event) => {
+    /*xhr.addEventListener("load", (event) => {
         localStorage.setItem('activities', this.response.activities);
         displayActivitiesList();
-    });
+    });*/
+    xhr.addEventListener('load', displayActivitiesList);
     xhr.responseType = "json";
     xhr.open("GET", "/users/activities");
     xhr.setRequestHeader("x-auth", token);
@@ -30,7 +31,7 @@ function load7Days() {
 }
 
 function displayActivitiesList() {
-    //localStorage.setItem('activities', this.response.activities);
+    localStorage.setItem('activities', this.response.activities);
     var activityUl = document.getElementById('activities');
     activityUl.innerHTML = "";
 
