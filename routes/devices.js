@@ -19,10 +19,6 @@ function getNewApikey() {
 	return newApikey;
 }
 
-Array.prototype.last = function () {
-	return this[this.length - 1];
-}
-
 router.post('/register', (req, res) => {
 	if (!req.headers['x-auth'])
 		return res.status(401).json({
@@ -183,8 +179,8 @@ router.post('/data', (req, res) => {
 									error: err
 								})
 							else if (user) {
-								activity = user.activities.last();
-								console.log(activity)
+								activity = user.activities[user.activities.length - 1];
+								
 								activity.endDateTime = new Date();
 								let avgSpeed = 0;
 
@@ -216,6 +212,8 @@ router.post('/data', (req, res) => {
 									case 'walk':
 										activity.caloriesBurned = 1;
 								}
+								console.log(activity)
+								user.activities[user.activities.length - 1] = activity;
 
 								user.save((err, savedUser) => {
 									if (err)
