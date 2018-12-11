@@ -18,7 +18,7 @@ function load7Days() {
     var uv = 0;
     currDate = new Date();
 
-    for (var active of localStorage.getItem('activities')) {
+    for (var active of window.localStorage.getItem('activities')) {
         if ((currDate - active.endDateTime) <= 7) {
             time += (active.endDateTime - active.startDateTime);
             calories += active.caloriesBurned;
