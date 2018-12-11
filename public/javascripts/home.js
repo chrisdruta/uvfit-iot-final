@@ -86,9 +86,13 @@ function accountInfo() {
 
 document.addEventListener("DOMContentLoaded", function () {
     initRefresh();
+
+    $("body").on('click', '.top', function () {
+        $("nav.menu").toggleClass("menu_show");
+    });
     document.getElementById("add").addEventListener("click", addDevice);
     document.getElementById("submit").addEventListener("click", submitDevice);
-    document.getElementById("account").addEventListener("click", accountInfo);
+    //document.getElementById("account").addEventListener("click", accountInfo);
     document.getElementById("refresh").addEventListener("click", initRefresh);
     document.getElementById("signout").addEventListener("click", signout);
 
