@@ -200,7 +200,7 @@ router.put('/info', (req, res) => {
 
 								// Go through and update all of the user's devices
 								Device.find({
-									email: user.email
+									userEmail: user.email
 								}, (err, devices) => {
 									if (err)
 										res.status(401).json({
