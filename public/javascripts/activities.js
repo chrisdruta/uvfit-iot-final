@@ -1,5 +1,6 @@
 function loadActivitiesList() {
     var token = window.localStorage.getItem("authToken");
+    var xhr = new XMLHttpRequest();
     /*xhr.addEventListener("load", (event) => {
         localStorage.setItem('activities', this.response.activities);
         displayActivitiesList();
