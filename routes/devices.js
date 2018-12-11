@@ -109,7 +109,7 @@ router.post('/register', (req, res) => {
 });
 
 router.post('/data', (req, res) => {
-
+	console.log(req.body)
 	Device.findOne({
 		photonId: req.body.deviceId
 	}, (err, device) => {
@@ -184,6 +184,7 @@ router.post('/data', (req, res) => {
 								})
 							else if (user) {
 								activity = user.activities.last();
+								console.log(activity)
 								activity.endDateTime = new Date();
 								let avgSpeed = 0;
 
