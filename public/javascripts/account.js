@@ -36,7 +36,7 @@ function submitUpdate() {
     xhr.open("PUT", '/users/info');
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("x-auth", token);
-    xhr.send(JSON.stringify({name:name, email:email, password:password, uvLevel:uvLevel, newPassword:newPassword, newPasswordConfirm:confirmPassword }));
+    xhr.send(JSON.stringify({name:name, email:email, password:oldPassword, uvLevel:uvLevel, newPassword:password, newPasswordConfirm:confirmPassword }));
 }
 
 function verifyUpdate() {
