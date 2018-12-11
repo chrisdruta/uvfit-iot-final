@@ -190,7 +190,7 @@ router.post('/data', (req, res) => {
 								for (data of device.dataBuffer) {
 									if (data.uv > activity.uvExposure)
 										activity.uvExposure = data.uv;
-									speed += data.speed;
+									avgSpeed += data.speed;
 									activity.route.push({
 										long: data.long,
 										lat: data.lat
