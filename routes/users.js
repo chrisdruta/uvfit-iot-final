@@ -133,9 +133,9 @@ router.post('/register', (req, res) => {
 
 });
 
-router.post('/update', (req, res) => {
+router.put('/update', (req, res) => {
 	/**
-	 * POST /user/update endpoint that updates a user's information
+	 * PUT /user/update endpoint that updates a user's information
 	 * 
 	 * Input:
 	 * 		Encoded JWT in header
