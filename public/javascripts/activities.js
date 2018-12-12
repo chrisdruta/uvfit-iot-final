@@ -40,7 +40,7 @@ function displayActivitiesList() {
 
     for (var activity in allActivities) {
         console.log("displayActivities for loop");
-        var li = document.createElement("li")
+        var li = document.createElement("li");
         li.name = allActivities[activity].id;
         console.log(allActivities[activity]);
         li.innerHTML = "Activity " + allActivities[activity].id + "; " + allActivities[activity].type + "&emsp;Date: " + allActivities[activity].startDateTime.toLocaleString() + "&emsp;Duration: " + allActivities[activity].endDateTime - allActivities[activity].startDateTime / 60000 + "&emsp;Calories: " + allActivities[activity].caloriesBurned + "&emsp;UV: " + allActivities[activity].uvExposure;
