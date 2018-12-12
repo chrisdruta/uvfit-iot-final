@@ -68,10 +68,11 @@ function displayDevices() {
         //button['type'] = 'button';
         //button['id'] = key;
         //button['click'] = "removeDevice()";
-        //deviceDiv.appendChild(button);
+        
         button.setAttribute('type', 'button');
         button.setAttribute('id', key);
         button.setAttribute('onclick', 'removeDevice()');
+        deviceDiv.appendChild(button);
 
     }
     deviceDiv.innerHTML += "</ol>"
