@@ -82,7 +82,7 @@ function displayDevices() {
 }
 
 function removeDevice() {
-    var photonId = this.attributes['id'].value
+    var photonId = this.getAttribute('id');
 
     var xhr = new XMLHttpRequest();
     xhr.addEventListener("load", processRemove);
