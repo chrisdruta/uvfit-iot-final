@@ -40,13 +40,14 @@ function displayActivitiesList() {
 
     for (var activity in allActivities) {
         var li = document.createElement("li");
-        li.setAttribute('name', allActivities[activity].id);
-        var text = document.createTextNode("Activity " + (allActivities[activity].id) + "; " + (allActivities[activity].type) + "&emsp;Date: " + (allActivities[activity].startDateTime.toLocaleString()) + "&emsp;Duration: " + (allActivities[activity].endDateTime - allActivities[activity].startDateTime) / 60000 + "&emsp;Calories: " + allActivities[activity].caloriesBurned + "&emsp;UV: " + allActivities[activity].uvExposure);
+        //li.setAttribute('name', allActivities[activity].id);
+        //var text = document.createTextNode("Activity " + (allActivities[activity].id) + "; " + (allActivities[activity].type) + "&emsp;Date: " + (allActivities[activity].startDateTime.toLocaleString()) + "&emsp;Duration: " + (allActivities[activity].endDateTime - allActivities[activity].startDateTime) / 60000 + "&emsp;Calories: " + allActivities[activity].caloriesBurned + "&emsp;UV: " + allActivities[activity].uvExposure);
         //li.innerHTML = "Activity " + (allActivities[activity].id) + "; " + (allActivities[activity].type) + "&emsp;Date: " + (allActivities[activity].startDateTime.toLocaleString()) + "&emsp;Duration: " + (allActivities[activity].endDateTime - allActivities[activity].startDateTime) / 60000 + "&emsp;Calories: " + allActivities[activity].caloriesBurned + "&emsp;UV: " + allActivities[activity].uvExposure;
-        li.appendChild(text);
-        li.addEventListener("click", addToMap);
+        li.appendChild(document.createTextNode("FUCK"));
+        //li.addEventListener("click", addToMap);
         activityUl.appendChild(li);
         console.log(activityUl);
+        //activityUl.style.display = 'block';
     }
 
 }
