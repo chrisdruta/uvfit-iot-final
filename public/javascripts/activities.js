@@ -39,14 +39,16 @@ function displayActivitiesList() {
     activityUl.innerHTML = "";
 
     for (var activity in allActivities) {
+        var date1 = new Date(allActivities[activity].endDateTime);
+        var date2 = new Date(allActivities[activity].startDateTime);
         var li = document.createElement("li");
         li.setAttribute('name', allActivities[activity].id);
-        var text = document.createTextNode("Activity " + (allActivities[activity].id) + "; " + (allActivities[activity].type) + "&emsp;Date: " + (allActivities[activity].startDateTime.toLocaleString()) + "&emsp;Duration: " + (allActivities[activity].endDateTime - allActivities[activity].startDateTime) / 60000 + "&emsp;Calories: " + allActivities[activity].caloriesBurned + "&emsp;UV: " + allActivities[activity].uvExposure);
+        var text = document.createTextNode("Activity " + (allActivities[activity].id) + "; " + (allActivities[activity].type) + "&emsp;Date: " + (allActivities[activity].startDateTime.toLocaleString()) + "&emsp;Duration: " + (date1.getTime() - date2.getTime()) / 60000 + "&emsp;Calories: " + allActivities[activity].caloriesBurned + "&emsp;UV: " + allActivities[activity].uvExposure);
         //li.innerHTML = "Activity " + (allActivities[activity].id) + "; " + (allActivities[activity].type) + "&emsp;Date: " + (allActivities[activity].startDateTime.toLocaleString()) + "&emsp;Duration: " + (allActivities[activity].endDateTime - allActivities[activity].startDateTime) / 60000 + "&emsp;Calories: " + allActivities[activity].caloriesBurned + "&emsp;UV: " + allActivities[activity].uvExposure;
         li.appendChild(text);
         li.addEventListener("click", addToMap);
         activityUl.appendChild(li);
-        console.log((allActivities[activity].endDateTime - allActivities[activity].startDateTime) / 60000);
+        console.log((date1.getTime() - date2.getTime()) / 60000);
         //activityUl.style.display = 'block';
     }
 
