@@ -229,7 +229,7 @@ router.post('/data', (req, res) => {
 													error: err
 												});
 											else if (savedDevice)
-												return res.status(201);
+												return res.status(201).json({successStart: true});
 											else
 												return res.status(400).json({
 													success: false,
@@ -296,7 +296,7 @@ router.post('/data', (req, res) => {
 											error: err
 										});
 									else if (savedUser) {
-										return res.status(201);
+										return res.status(201).json({successEnd: true});
 									} else
 										res.status(400).json({
 											error: "Failed to save user"
