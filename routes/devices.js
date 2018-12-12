@@ -164,7 +164,7 @@ router.delete('/remove', (req, res) => {
 						newDevices.push(dev)
 				}
 				user.devices = newDevices
-				console.log(user.devices)
+				console.log(newDevices)
 				user.save((err, savedUser) => {
 					if (err)
 						console.log(err);
