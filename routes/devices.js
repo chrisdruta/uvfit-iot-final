@@ -161,9 +161,9 @@ router.delete('/remove', (req, res) => {
 				//for (dev of user.devices) {
 				//	if (dev != req.body.photonId)
 				//}
-
+				console.log(user.devices)
 				user.devices = user.devices.filter(e => e != req.body.photonId);
-
+				console.log(user.devices)
 				user.save((err, savedUser) => {
 					if (err)
 						console.log(err);
