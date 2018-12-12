@@ -119,4 +119,6 @@ function signUpResponse() {
   responseDiv.innerHTML = responseHTML;
 }
 
-document.getElementById("register").addEventListener("click", checkForm);
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("register").addEventListener("click", checkForm);
+});
