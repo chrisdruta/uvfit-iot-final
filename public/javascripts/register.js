@@ -1,4 +1,4 @@
-function checkForm(event) {
+function checkForm() {
    var name = document.getElementById("fullName");
    var email = document.getElementById("email");
    var password = document.getElementById("password");
@@ -92,7 +92,7 @@ function checkForm(event) {
 }
 
 function signUpResponse() {
-  // 200 is the response code for a successful GET request
+  // 201 is the response code for a successful POST request
   if (this.status === 201) {
     if (this.response.success) {
       // Change current location to the signin page.
