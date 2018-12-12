@@ -19,16 +19,18 @@ function load7Days() {
     var calories = 0;
     var uv = 0;
     currDate = new Date();
+    var date1 = allActivities[active].endDateTime;
+    var date2 = allActivities[active].startDateTime;
 
     for (var active in allActivities) {
-        if ((currDate - allActivities[active].endDateTime) <= 7*24*60*60*1000) {
-            time += (allActivities[active].endDateTime - allActivities[active].startDateTime);
+        if ((currDate.getTime() - date1.getTime()) <= 7*24*60*60*1000) {
+            time += (date1.getTime() - date2.getTime());
             calories += allActivities[active].caloriesBurned;
             uv += allActivities[active].uvExposure;
         }
     }
 
-    document.getElementById("7time").innerHTML = time + "mins";
+    document.getElementById("7time").innerHTML = (time / 60000).toFixed(2)  + "mins";
     document.getElementById("7calories").innerHTML = calories;
     document.getElementById("7uv").innerHTML = uv;
 }
