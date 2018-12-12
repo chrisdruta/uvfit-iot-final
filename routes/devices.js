@@ -156,15 +156,14 @@ router.delete('/remove', (req, res) => {
 					if (err)
 						console.log(err);
 				});
-				console.log(req.body.photonId)
-				console.log(user.devices)
+				
 				let newDevices = [];
 				for (dev of user.devices) {
 					if (dev != req.body.photonId)
 						newDevices.push(dev)
 				}
 				user.devices = newDevices
-				console.log(newDevices)
+				
 				user.save((err, savedUser) => {
 					if (err)
 						console.log(err);
