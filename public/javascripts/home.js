@@ -64,12 +64,12 @@ function displayDevices() {
 
     for (var key of this.response.deviceList) {
         deviceDiv.innerHTML += "<li>" + key + "</li>";
-        var button = document.createElement('button');
+        var button = document.createElement('input');
         //button['type'] = 'button';
         //button['id'] = key;
         //button['click'] = "removeDevice()";
         
-        //button.setAttribute('type', 'button');
+        button.setAttribute('type', 'button');
         button.setAttribute('id', key);
         button.innerHTML = 'Delete Device';
         button.setAttribute('class', 'btn');
