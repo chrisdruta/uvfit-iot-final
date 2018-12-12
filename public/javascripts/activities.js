@@ -1,9 +1,11 @@
 function loadActivitiesList() {
     var token = window.localStorage.getItem("authToken");
-    xhr.addEventListener("load", (event) => {
+    var xhr = new XMLHttpRequest();
+    /*xhr.addEventListener("load", (event) => {
         localStorage.setItem('activities', this.response.activities);
         displayActivitiesList();
-    });
+    });*/
+    xhr.addEventListener('load', displayActivitiesList);
     xhr.responseType = "json";
     xhr.open("GET", "/users/activities");
     xhr.setRequestHeader("x-auth", token);
@@ -16,7 +18,7 @@ function load7Days() {
     var uv = 0;
     currDate = new Date();
 
-    for (var active of localStorage.getItem('activities')) {
+    for (var active of window.localStorage.getItem('activities')) {
         if ((currDate - active.endDateTime) <= 7) {
             time += (active.endDateTime - active.startDateTime);
             calories += active.caloriesBurned;
@@ -30,11 +32,11 @@ function load7Days() {
 }
 
 function displayActivitiesList() {
-    //localStorage.setItem('activities', this.response.activities);
+    localStorage.setItem('activities', this.response.activities);
     var activityUl = document.getElementById('activities');
     activityUl.innerHTML = "";
 
-    for (var activity of localStorage.getItem('activities')) {
+    for (var activity of window.localStorage.getItem('activities')) {
         var li = document.createElement("li")
         li.name = activity.id;
         li.innerHTML = "Activity " + activity.id + "; " + activity.type + "&emsp;Date: " + activity.startDateTime.toLocaleString() + "&emsp;Duration: " + activity.endDateTime - activity.startDateTime / 60000 + "&emsp;Calories: " + activity.caloriesBurned + "&emsp;UV: " + activity.uvExposure;
@@ -58,7 +60,7 @@ function addToMap() {
 
     activity.route;
     //for loop
-    for (var location of localStorage.getItem("activities")[this.name-1].route) {
+    for (var location of window.localStorage.getItem("activities")[this.name-1].route) {
         var marker = L.marker([location.lat, location.long]).addTo(mymap);
     }
     document.getElementById("mapid").style.display = "block";

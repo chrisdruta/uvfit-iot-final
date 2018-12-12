@@ -49,31 +49,32 @@ function processResponse() {
 function initRefresh() {
     var token = window.localStorage.getItem("authToken");
     var xhr = new XMLHttpRequest();
-    xhr.addEventListener("load", displayRecentActivity);
+    xhr.addEventListener("load", displayDevices);
     xhr.responseType = "json";
     xhr.open("GET", "/users/devices");
     xhr.setRequestHeader("x-auth", token);
     xhr.send();
 }
 
-function displayRecentActivity() {
-    var deviceHTML = "";
+function displayDevices() {
     var deviceDiv = document.getElementById('current-devices');
+    deviceDiv.innerHTML = "";
 
-    deviceHTML += "<ol>";
+    deviceDiv.innerHTML += "<ol>";
 
-    for (var key in this.response.deviceList) {
-        deviceHTML += "<li>" + key + "</li>";
+    for (var key of this.response.deviceList) {
+        deviceDiv.innerHTML += "<li>" + key + "</li>";
         var button = document.createAttribute('input');
-        button.setAttribute('type', 'button');
+        button['type'] = 'button';
+        button['id'] = key;
+        button['click'] = "removeDevice()";
+        deviceDiv.appendChild(button);
+        /*button.setAttribute('type', 'button');
         button.setAttribute('id', key);
-        button.setAttribute('onclick', 'removeDevice()');
+        button.setAttribute('onclick', 'removeDevice()');*/
 
     }
-    deviceHTML += "</ol>"
-
-    // Update the response div in the webpage and make it visible
-    deviceDiv.innerHTML = deviceHTML;
+    deviceDiv.innerHTML += "</ol>"
 
 }
 
