@@ -62,7 +62,7 @@ function displayRecentActivity() {
 
     deviceHTML += "<ol>";
 
-    for (var key in this.response.deviceList) {
+    for (var key of this.response.deviceList) {
         deviceHTML += "<li>" + key + "</li>";
         var button = document.createAttribute('input');
         button['type'] = 'button';
