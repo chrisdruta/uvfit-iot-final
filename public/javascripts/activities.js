@@ -28,7 +28,7 @@ function load7Days() {
         }
     }
 
-    document.getElementById("7time").innerHTML = time + "hrs";
+    document.getElementById("7time").innerHTML = time;
     document.getElementById("7calories").innerHTML = calories;
     document.getElementById("7uv").innerHTML = uv;
 }
@@ -41,12 +41,12 @@ function displayActivitiesList() {
     for (var activity in allActivities) {
         console.log("displayActivities for loop");
         var li = document.createElement("li");
-        li.name = allActivities[activity].id;
-        console.log(allActivities[activity]);
+        li.setAttribute('name', allActivities[activity].id);
+        
         li.innerHTML = "Activity " + allActivities[activity].id + "; " + allActivities[activity].type + "&emsp;Date: " + allActivities[activity].startDateTime.toLocaleString() + "&emsp;Duration: " + allActivities[activity].endDateTime - allActivities[activity].startDateTime / 60000 + "&emsp;Calories: " + allActivities[activity].caloriesBurned + "&emsp;UV: " + allActivities[activity].uvExposure;
         li.addEventListener("click", addToMap);
         activityUl.appendChild(li);
-        
+        console.log(li);
     }
 
 }
