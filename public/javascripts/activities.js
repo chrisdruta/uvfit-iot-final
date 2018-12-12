@@ -19,12 +19,14 @@ function load7Days() {
     var calories = 0;
     var uv = 0;
     currDate = new Date();
+    console.log(allActivities);
 
     for (var active in allActivities) {
+        console.log("We are in the for loop");
         var date1 = new Date(allActivities[active].endDateTime);
         var date2 = new Date(allActivities[active].startDateTime);
 
-        console.log((currDate.getTime() - date1.getTime()));
+        console.log(currDate.getTime() - date1.getTime());
         if ((currDate.getTime() - date1.getTime()) <= 7*24*60*60*1000) {
             console.log("loop shit");
             time += (date1.getTime() - date2.getTime());
