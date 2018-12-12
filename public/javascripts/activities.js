@@ -65,9 +65,8 @@ function addToMap() {
         id: 'mapbox.streets',
         accessToken: 'your.mapbox.access.token'
     }).addTo(mymap);
-
-
-    //activity.route;
+    
+    console.log(allActivities[this.name-1]);
     //for loop
     for (var location of allActivities[this.name-1].route) {
         var marker = L.marker([location.lat, location.long]).addTo(mymap);
