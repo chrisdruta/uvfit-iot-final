@@ -1,3 +1,5 @@
+var allActivities = null;
+
 function loadActivitiesList() {
     var token = window.localStorage.getItem("authToken");
     var xhr = new XMLHttpRequest();
@@ -18,7 +20,7 @@ function load7Days() {
     var uv = 0;
     currDate = new Date();
 
-    for (var active of window.localStorage.getItem('activities')) {
+    for (var active of allActivities) {
         if ((currDate - active.endDateTime) <= 7) {
             time += (active.endDateTime - active.startDateTime);
             calories += active.caloriesBurned;
@@ -32,9 +34,10 @@ function load7Days() {
 }
 
 function displayActivitiesList() {
-    localStorage.setItem('activities', this.response.activities);
+    //localStorage.setItem('activities', this.response.activities);
+    allActivities = this.response.activities;
     console.log(this.response.activities);
-    console.log(localStorage.getItem('activities'));
+    console.log(allActivities);
     var activityUl = document.getElementById('activities');
     activityUl.innerHTML = "";
 
