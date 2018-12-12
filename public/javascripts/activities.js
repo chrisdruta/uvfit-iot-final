@@ -70,7 +70,9 @@ function addToMap() {
         }).addTo(mymap);
     } 
 
-
+    else {
+        L.marker.clearLayers();
+    }
     
     //for loop
     for (var location of allActivities[this.attributes['name'].value-1].route) {
