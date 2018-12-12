@@ -16,7 +16,7 @@ Server URLs:
 
 Pitch Video: https://www.youtube.com/watch?v=R2u2OaH9yWM&feature=youtu.be
 
-Code Video: YouTube
+Code Video (better quality in the indivudual versions on the same channel): https://www.youtube.com/watch?v=01z_UDiuEcA&feature=youtu.be
 
 ## Endpoint for Grader
 
