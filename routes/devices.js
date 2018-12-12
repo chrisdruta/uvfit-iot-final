@@ -154,17 +154,18 @@ router.delete('/remove', (req, res) => {
 					photonId: req.body.photonId
 				}, (err, removedDevice) => {
 					if (err)
-						res.status(401).json({
-							success: false,
-							error: err
-						});
-
-					else
-						res.status(200).json({
-							success: true
-						});
-
+						console.log(err);
 				});
+
+				user.devices.filter(e => e != req.body.photonId)
+
+				user.save((err, savedUser) => {
+					if (err)
+						console.log(err);
+					else
+						res.status(201).json({success: true});
+				});
+
 			} else {
 				res.status(401).json({
 					success: false,
@@ -183,7 +184,7 @@ router.delete('/remove', (req, res) => {
 });
 
 router.post('/data', (req, res) => {
-	console.log(req.body)
+	
 	Device.findOne({
 		photonId: req.body.deviceId
 	}, (err, device) => {
