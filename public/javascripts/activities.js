@@ -19,8 +19,8 @@ function load7Days() {
     var calories = 0;
     var uv = 0;
     currDate = new Date();
-    var date1 = allActivities[active].endDateTime;
-    var date2 = allActivities[active].startDateTime;
+    var date1 = new Date(allActivities[active].endDateTime);
+    var date2 = new Date(allActivities[active].startDateTime);
 
     for (var active in allActivities) {
         if ((currDate.getTime() - date1.getTime()) <= 7*24*60*60*1000) {
