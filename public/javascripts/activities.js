@@ -46,7 +46,7 @@ function displayActivitiesList() {
         li.appendChild(text);
         li.addEventListener("click", addToMap);
         activityUl.appendChild(li);
-        console.log(li);
+        console.log(activityUl);
     }
 
 }
