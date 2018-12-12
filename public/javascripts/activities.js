@@ -1,5 +1,6 @@
 var allActivities = null;
 var mymap = null;
+var marker = null;
 
 function loadActivitiesList() {
     var token = window.localStorage.getItem("authToken");
@@ -71,12 +72,12 @@ function addToMap() {
     } 
 
     else {
-        L.marker.clearLayers();
+        marker.clearLayers();
     }
     
     //for loop
     for (var location of allActivities[this.attributes['name'].value-1].route) {
-        var marker = L.marker([location.lat, -location.long]).addTo(mymap);
+        marker = L.marker([location.lat, -location.long]).addTo(mymap);
     }
     document.getElementById("mapid").style.display = "block";
 }
