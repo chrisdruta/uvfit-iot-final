@@ -72,16 +72,11 @@ function checkForm() {
 		return;
 	}
 
-  //if (count == 0) {
 	formErrorsDiv.style.display = "none";
 	name.style.border = "1px solid #aaa";
 	email.style.border = "1px solid #aaa";
 	password.style.border = "1px solid #aaa";
 	passwordConfirm.style.border = "1px solid #aaa";
-   //}
-
-   //errorsHTML += "</ul>";
-   //formErrorsDiv.innerHTML = errorsHTML;
 
   var xhr = new XMLHttpRequest();
 	xhr.addEventListener("load", signUpResponse);

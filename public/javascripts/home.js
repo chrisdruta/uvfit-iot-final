@@ -82,13 +82,15 @@ function displayDevices() {
 }
 
 function removeDevice() {
+    var photonId = this.attributes['id'].value
+
     var xhr = new XMLHttpRequest();
     xhr.addEventListener("load", processRemove);
     xhr.responseType = "json";
     xhr.open("DELETE", '/devices/remove');
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("x-auth", window.localStorage.getItem("authToken"));
-    xhr.send();
+    xhr.send(JSON.stringify({photonId:photonId}));
 }
 
 function processRemove() {
