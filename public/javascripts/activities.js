@@ -67,7 +67,7 @@ function addToMap() {
     }).addTo(mymap);
     
     console.log(allActivities);
-    console.log(this.name);
+    console.log(this.attributes['name'].value);
     //for loop
     for (var location of allActivities[this.name-1].route) {
         var marker = L.marker([location.lat, location.long]).addTo(mymap);
