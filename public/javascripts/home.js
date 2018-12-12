@@ -92,6 +92,7 @@ function removeDevice(event) {
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("x-auth", window.localStorage.getItem("authToken"));
     xhr.send(JSON.stringify({photonId:photonId}));
+    window.location.reload();
 }
 
 function processRemove() {
@@ -99,8 +100,8 @@ function processRemove() {
     var responseHTML = "";
 
     // 200 is the response code for a successful DELETE request
-    if (this.status === 200) {
-        initRefresh();
+    if (this.status >= 200 && this.status < 300) {
+        //initRefresh();
         /*responseHTML += "<ol class='ServerResponse'>";
 
         for (var key in this.response) {
