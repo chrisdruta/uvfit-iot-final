@@ -60,6 +60,7 @@ function displayActivitiesList() {
 function addToMap() {
     document.getElementById("mapid").innerHTML = "";
 
+    mymap.remove();
     if (mymap == null) {
         mymap = L.map('mapid').setView([32.242725, -110.963965], 16);
 
@@ -70,10 +71,6 @@ function addToMap() {
             accessToken: 'your.mapbox.access.token'
         }).addTo(mymap);
     } 
-
-    else {
-        marker.clearLayers();
-    }
     
     //for loop
     for (var location of allActivities[this.attributes['name'].value-1].route) {
