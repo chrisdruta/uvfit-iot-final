@@ -81,9 +81,9 @@ function displayDevices() {
 
 }
 
-function removeDevice() {
-    console.log(this);
-    var photonId = this.getAttribute('id');
+function removeDevice(event) {
+    console.log(event.target);
+    var photonId = event.target.getAttribute('id');
 
     var xhr = new XMLHttpRequest();
     xhr.addEventListener("load", processRemove);
