@@ -69,7 +69,7 @@ function addToMap() {
     console.log(allActivities);
     console.log(this.attributes['name'].value);
     //for loop
-    for (var location of allActivities[this.name-1].route) {
+    for (var location of allActivities[this.attributes['name'].value-1].route) {
         var marker = L.marker([location.lat, location.long]).addTo(mymap);
     }
     document.getElementById("mapid").style.display = "block";
