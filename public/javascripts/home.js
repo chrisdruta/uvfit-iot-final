@@ -57,26 +57,24 @@ function initRefresh() {
 }
 
 function displayDevices() {
-    var deviceHTML = "";
     var deviceDiv = document.getElementById('current-devices');
+    deviceDiv.innerHTML = "";
 
-    deviceHTML += "<ol>";
+    deviceDiv.innerHTML += "<ol>";
 
     for (var key of this.response.deviceList) {
-        deviceHTML += "<li>" + key + "</li>";
+        deviceDiv.innerHTML += "<li>" + key + "</li>";
         var button = document.createAttribute('input');
         button['type'] = 'button';
         button['id'] = key;
         button['click'] = "removeDevice()";
+        deviceDiv.appendChild(button);
         /*button.setAttribute('type', 'button');
         button.setAttribute('id', key);
         button.setAttribute('onclick', 'removeDevice()');*/
 
     }
-    deviceHTML += "</ol>"
-
-    // Update the response div in the webpage and make it visible
-    deviceDiv.innerHTML = deviceHTML;
+    deviceDiv.innerHTML += "</ol>"
 
 }
 
