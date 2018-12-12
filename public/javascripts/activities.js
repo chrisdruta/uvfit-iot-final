@@ -34,10 +34,7 @@ function load7Days() {
 }
 
 function displayActivitiesList() {
-    //localStorage.setItem('activities', this.response.activities);
     allActivities = this.response.activities;
-    console.log(this.response.activities);
-    console.log(allActivities);
     var activityUl = document.getElementById('activities');
     activityUl.innerHTML = "";
 
@@ -45,6 +42,7 @@ function displayActivitiesList() {
         console.log("displayActivities for loop");
         var li = document.createElement("li")
         li.name = allActivities[activity].id;
+        console.log(allActivities[activity]);
         li.innerHTML = "Activity " + allActivities[activity].id + "; " + allActivities[activity].type + "&emsp;Date: " + allActivities[activity].startDateTime.toLocaleString() + "&emsp;Duration: " + allActivities[activity].endDateTime - allActivities[activity].startDateTime / 60000 + "&emsp;Calories: " + allActivities[activity].caloriesBurned + "&emsp;UV: " + allActivities[activity].uvExposure;
         li.addEventListener("click", addToMap);
         activityUl.appendChild(li);
