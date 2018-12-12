@@ -69,7 +69,7 @@ function addToMap() {
 
     //activity.route;
     //for loop
-    for (var location of window.localStorage.getItem("activities")[this.name-1].route) {
+    for (var location of allActivities[this.name-1].route) {
         var marker = L.marker([location.lat, location.long]).addTo(mymap);
     }
     document.getElementById("mapid").style.display = "block";
