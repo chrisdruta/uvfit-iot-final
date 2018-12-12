@@ -33,6 +33,8 @@ function load7Days() {
 
 function displayActivitiesList() {
     localStorage.setItem('activities', this.response.activities);
+    console.log(this.response.activities);
+    console.log(localStorage.getItem('activities'));
     var activityUl = document.getElementById('activities');
     activityUl.innerHTML = "";
 
@@ -44,6 +46,7 @@ function displayActivitiesList() {
         activityUl.appendChild(li);
         
     }
+
 }
 
 function addToMap() {
