@@ -2,19 +2,24 @@
 #include <Adafruit_GPS.h>
 #include <Wire.h>
 #include "Adafruit_VEML6070.h"
-
-
+#include <stdio.h>
+#include <math.h>
 
 #define mySerial Serial1
 
 Adafruit_GPS GPS(&mySerial);
 Adafruit_VEML6070 uv = Adafruit_VEML6070();
 int button = BTN;
-enum State {noActivity, activity, sendingData};
+
+
+int userUVLevel = 1;
+
+
+enum State {noActivity, activity, sendingData, emptyLists};
 State state = noActivity;
 bool executeStateMachines = false;
 
-static const int MAXPOINTS = 120;
+static const int MAXPOINTS = 601;
 int currentPoint = 0;
 
 int led = D7; 
@@ -24,6 +29,8 @@ float lats[MAXPOINTS];
 float uvs[MAXPOINTS];
 float speeds[MAXPOINTS];
 
+
+uint32_t dayAmount = 1000 * 60 * 60 * 24;
 
 
 #define GPSECHO  true
@@ -51,6 +58,7 @@ void setup()
     GPS.sendCommand(PGCMD_ANTENNA);
     
     Particle.subscribe("hook-response/data", myHandler, MY_DEVICES);
+    Particle.subscribe("hook-response/getUV", myHandler2, MY_DEVICES);
     
     stateMachineTimer.start();
 
@@ -112,10 +120,13 @@ void loop()
 }
 
 void execute(){
-    float lat = GPS.latitude;
-    float lon = GPS.longitude;
+    //float lat = convertDegMinToDecDeg(GPS.latitude);
+    //float lon = convertDegMinToDecDeg(GPS.longitude);
     float speed = GPS.speed;
     float uvlight = uv.readUV();
+    
+    float lat = GPS.latitudeDegrees;
+    float lon = GPS.longitudeDegrees;
     
     switch(state){
         case noActivity:
@@ -123,18 +134,24 @@ void execute(){
             currentPoint = 0;
             flash = false;
             digitalWrite(led, LOW);
+
             if(digitalRead(button) == 0){
                 state = activity;
+                Particle.publish("getUV", "nothing", PRIVATE);
                 digitalWrite(led, HIGH);
             }
+           
             
             break;
         }
         case activity:
         {
-            if(true){//replace with uvlight value
+            if(uvlight > userUVLevel){//replace with uvlight value
                 digitalWrite(D7, (flash) ? HIGH : LOW);
                 flash = !flash;
+            }
+            else {
+                digitalWrite(led, HIGH);
             }
             lats[currentPoint] = lat;
             lons[currentPoint] = lon;
@@ -142,7 +159,7 @@ void execute(){
             uvs[currentPoint] = uvlight;
             currentPoint++;
             
-            if (currentPoint == 120){
+            if (currentPoint == MAXPOINTS-1) {
                 state = sendingData;
             }
             String data = String::format("{ \"longitude\": \"%f\", \"latitude\":\"%f\", \"speed\": \"%f\", \"uvLight\": \"%f\" }", lon, lat, speed, uvlight);
@@ -150,6 +167,7 @@ void execute(){
             
             if(digitalRead(button) == 0){
                 state = sendingData;
+                Serial.println(currentPoint);
             }
             break;
         }
@@ -159,10 +177,19 @@ void execute(){
             flash = false;
             digitalWrite(led, LOW);
             
-            if(WiFi.ready()){
+            if(millis() - timer > dayAmount) {
+                state = emptyLists;
+            }
+            
+            else if(WiFi.ready()){
                 state = noActivity;
                 
-                while(lats[currentPoint] != 0){
+                String start = String::format("{ \"command\": \"start\" }");
+                Particle.publish("data", start);
+                
+                delay(1000);
+                
+                while((lats[currentPoint]) != 0 && (currentPoint != MAXPOINTS - 1)){
                     
                     lat = lats[currentPoint];
                     lon = lons[currentPoint];
@@ -170,17 +197,40 @@ void execute(){
                     uvlight = uvs[currentPoint];
                     String data = String::format("{ \"longitude\": \"%f\", \"latitude\":\"%f\", \"speed\": \"%f\", \"uvLight\": \"%f\" }"
                                                  , lon, lat, speed, uvlight);
-                    Particle.publish("data", data);
-                                                 
+                    Particle.publish("data", data, PRIVATE);
+                    Serial.println("sent");
+                    delay(1000);
+                    //Serial.println(data);
                     lats[currentPoint] = 0;
                     lons[currentPoint] = 0;
                     speeds[currentPoint] = 0;
                     uvs[currentPoint] = 0;
                     currentPoint++;
-                    delay(200);
+                    //Serial.println(currentPoint);
+                    
                 }
+                timer = millis();
+                delay(1000);
+                String end = String::format("{ \"command\": \"end\" }");
+                Particle.publish("data", end);
                 break;
             }
+            break;
+        }
+        case emptyLists:
+        {
+            while(lats[currentPoint] != 0){
+                    
+                lats[currentPoint] = 0;
+                lons[currentPoint] = 0;
+                speeds[currentPoint] = 0;
+                uvs[currentPoint] = 0;
+                currentPoint++;
+                //delay(200);
+            }
+            state = noActivity;
+            timer = millis();
+            break;
         }
     }
 }
@@ -192,6 +242,30 @@ void myHandler(const char *event, const char *data) {
   Serial.println(output);
 }
 
+void myHandler2(const char *event, const char *data) {
+    //String number = String::format("%s", data);
+    //Serial.println(number);
+    
+    sscanf(data, "%d", &userUVLevel);
+    
+    //Serial.println(userUVLevel);
+    
+}
+
+
+float convertDegMinToDecDeg (float degMin) {
+  double min = 0.0;
+  double decDeg = 0.0;
+ 
+  //get the minutes, fmod() requires double
+  min = fmod((double)degMin, 100.0);
+ 
+  //rebuild coordinates in decimal degrees
+  degMin = (int) ( degMin / 100 );
+  decDeg = degMin + ( min / 60 );
+ 
+  return decDeg;
+}
 
 
 
