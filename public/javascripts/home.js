@@ -71,6 +71,8 @@ function displayDevices() {
         
         button.setAttribute('type', 'button');
         button.setAttribute('id', key);
+        button.setAttribute('value', 'Delete Device');
+        button.setAttribute('class', 'btn');
         button.setAttribute('onclick', 'removeDevice()');
         deviceDiv.appendChild(button);
 
