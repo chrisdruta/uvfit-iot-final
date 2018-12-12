@@ -6,8 +6,12 @@ var jwt = require("jwt-simple");
 var User = require("../models/users");
 var Device = require("../models/devices");
 
-const SPEED_BIKE = 15;
-const SPEED_RUN = 8;
+const SPEED_BIKE = 14;
+const SPEED_RUN = 10;
+
+const CALORIES_BIKE = 240/ 20/ 60;
+const CALORIES_RUN = 490/ 20/ 60;
+const CALORIES_WALK = 120 / 20/ 60;
 
 function getNewApikey() {
 	var newApikey = "";
@@ -276,15 +280,16 @@ router.post('/data', (req, res) => {
 								else
 									activity.type = 'walk';
 
+								let time = (activity.endDateTime - activity.startDateTime)/1000;
 								switch (activity.type) {
 									case 'bike':
-										activity.caloriesBurned = 420;
+										activity.caloriesBurned = time * CALORIES_BIKE;
 										break;
 									case 'run':
-										activity.caloriesBurned = 69;
+										activity.caloriesBurned = time * CALORIES_RUN;
 										break;
 									case 'walk':
-										activity.caloriesBurned = 1;
+										activity.caloriesBurned = time * CALORIES_WALK;
 								}
 								console.log(activity)
 								user.activities.push(activity);
