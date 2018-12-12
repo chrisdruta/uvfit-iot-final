@@ -31,13 +31,13 @@ function load7Days() {
             console.log("loop shit");
             time += (date1.getTime() - date2.getTime());
             calories += allActivities[active].caloriesBurned;
-            uv += allActivities[active].uvExposure;
+            uv += Number(allActivities[active].uvExposure);
         }
     }
 
     document.getElementById("7time").innerHTML = (time / 60000).toFixed(2)  + "mins";
     document.getElementById("7calories").innerHTML = calories;
-    document.getElementById("7uv").innerHTML = uv;
+    document.getElementById("7uv").innerHTML = uv.toFixed(0);
 }
 
 function displayActivitiesList() {
