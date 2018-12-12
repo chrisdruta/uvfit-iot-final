@@ -21,7 +21,7 @@ function load7Days() {
     currDate = new Date();
 
     for (var active in allActivities) {
-        if ((currDate - allActivities[active].endDateTime) <= 7) {
+        if ((currDate - allActivities[active].endDateTime) <= 7*24*60*60*1000) {
             time += (allActivities[active].endDateTime - allActivities[active].startDateTime);
             calories += allActivities[active].caloriesBurned;
             uv += allActivities[active].uvExposure;
@@ -42,6 +42,7 @@ function displayActivitiesList() {
     activityUl.innerHTML = "";
 
     for (var activity in allActivities) {
+        console.log("displayActivities for loop");
         var li = document.createElement("li")
         li.name = allActivities[activity].id;
         li.innerHTML = "Activity " + allActivities[activity].id + "; " + allActivities[activity].type + "&emsp;Date: " + allActivities[activity].startDateTime.toLocaleString() + "&emsp;Duration: " + allActivities[activity].endDateTime - allActivities[activity].startDateTime / 60000 + "&emsp;Calories: " + allActivities[activity].caloriesBurned + "&emsp;UV: " + allActivities[activity].uvExposure;
