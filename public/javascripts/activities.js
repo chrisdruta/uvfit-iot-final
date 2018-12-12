@@ -19,10 +19,11 @@ function load7Days() {
     var calories = 0;
     var uv = 0;
     currDate = new Date();
-    var date1 = new Date(allActivities[active].endDateTime);
-    var date2 = new Date(allActivities[active].startDateTime);
 
     for (var active in allActivities) {
+        var date1 = new Date(allActivities[active].endDateTime);
+        var date2 = new Date(allActivities[active].startDateTime);
+        
         if ((currDate.getTime() - date1.getTime()) <= 7*24*60*60*1000) {
             time += (date1.getTime() - date2.getTime());
             calories += allActivities[active].caloriesBurned;
@@ -45,7 +46,7 @@ function displayActivitiesList() {
         var date2 = new Date(allActivities[activity].startDateTime);
         var li = document.createElement("li");
         li.setAttribute('name', allActivities[activity].id);
-        var text = document.createTextNode("Activity " + (allActivities[activity].id) + "; " + (allActivities[activity].type) + + " Date: " + (allActivities[activity].startDateTime.toLocaleString()) +  + " Duration: " + ((date1.getTime() - date2.getTime()) / 60000).toFixed(2) + "mins Calories: " + allActivities[activity].caloriesBurned + " UV: " + allActivities[activity].uvExposure);
+        var text = document.createTextNode("Activity " + (allActivities[activity].id) + "; " + (allActivities[activity].type) + " Date: " + (allActivities[activity].startDateTime.toLocaleString()) + " Duration: " + ((date1.getTime() - date2.getTime()) / 60000).toFixed(2) + "mins Calories: " + allActivities[activity].caloriesBurned + " UV: " + allActivities[activity].uvExposure);
         li.appendChild(text);
         li.addEventListener("click", addToMap);
         activityUl.appendChild(li);
