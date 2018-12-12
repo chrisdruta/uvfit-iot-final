@@ -82,6 +82,7 @@ function displayDevices() {
 }
 
 function removeDevice() {
+    console.log(this);
     var photonId = this.getAttribute('id');
 
     var xhr = new XMLHttpRequest();
