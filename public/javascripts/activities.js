@@ -55,6 +55,7 @@ function displayActivitiesList() {
         li.addEventListener("click", addToMap);
         activityUl.appendChild(li);
     }
+    load7Days();
 
 }
 
@@ -80,7 +81,7 @@ function addToMap() {
 
 document.addEventListener("DOMContentLoaded", function () {
     loadActivitiesList();
-    load7Days();
+    //load7Days();
 
     $("body").on('click', '.top', function () {
         $("nav.menu").toggleClass("menu_show");
