@@ -64,14 +64,14 @@ function displayDevices() {
 
     for (var key of this.response.deviceList) {
         deviceDiv.innerHTML += "<li>" + key + "</li>";
-        var button = document.createAttribute('input');
-        button['type'] = 'button';
-        button['id'] = key;
-        button['click'] = "removeDevice()";
-        deviceDiv.appendChild(button);
-        /*button.setAttribute('type', 'button');
+        var button = document.createElement('input');
+        //button['type'] = 'button';
+        //button['id'] = key;
+        //button['click'] = "removeDevice()";
+        //deviceDiv.appendChild(button);
+        button.setAttribute('type', 'button');
         button.setAttribute('id', key);
-        button.setAttribute('onclick', 'removeDevice()');*/
+        button.setAttribute('onclick', 'removeDevice()');
 
     }
     deviceDiv.innerHTML += "</ol>"
