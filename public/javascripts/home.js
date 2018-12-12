@@ -49,14 +49,14 @@ function processResponse() {
 function initRefresh() {
     var token = window.localStorage.getItem("authToken");
     var xhr = new XMLHttpRequest();
-    xhr.addEventListener("load", displayRecentActivity);
+    xhr.addEventListener("load", displayDevices);
     xhr.responseType = "json";
     xhr.open("GET", "/users/devices");
     xhr.setRequestHeader("x-auth", token);
     xhr.send();
 }
 
-function displayRecentActivity() {
+function displayDevices() {
     var deviceHTML = "";
     var deviceDiv = document.getElementById('current-devices');
 
